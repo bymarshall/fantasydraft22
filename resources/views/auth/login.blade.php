@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header" style="align-content: center">
                     <img src="{{ asset('storage/img/mlb.png') }}" width="10%" height="10%"/>
-                    MLB Fantasy Draft 20201 - Inicio de Sesión
+                    MLB Fantasy Draft 2022 - Inicio de Sesión
                 </div>
 
                 <div class="card-body">

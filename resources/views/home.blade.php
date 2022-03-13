@@ -60,7 +60,7 @@
                 if($user_role[0]->id_rol == '1') {
                 ?>
                <!-- MODAL PLAYER AUCTION -->
-              <div id="auctionModal" class="modal fade" tabindex="-1" role="dialog">
+              <div id="auctionModal" class="modal fade" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
                   <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
                       <div class="modal-content" style="background-color: #2994d6;">
                           <div class="modal-header">
@@ -127,7 +127,7 @@
                                                           <span id="playerHlty" style="white-space: nowrap; overflow: hidden;"></span>
                                                       </td>
                                                       <td>
-                                                          <label>Juegos 2020:</label>
+                                                          <label>Juegos 2021:</label>
                                                           <span id="plJgos" style="font-size: 24px;font-weight: bolder;"></span>
                                                       </td>
                                                   </tr>
@@ -154,7 +154,7 @@
                                                           </div><!-- FORM GROUP-->
                                                       </td>
                                                       <td>
-                                                          <label>Puntos 2020:</label>
+                                                          <label>Puntos 2021:</label>
                                                           <span id="plPtos" style="font-size: 24px;font-weight: bolder;"></span>
                                                       </td>
                                                   </tr>
@@ -328,7 +328,7 @@
                                     <span id="playerHltyAuction" style="white-space: nowrap; overflow: hidden;"></span>
                                 </td>
                                 <td>
-                                    <label>Juegos 2020:</label>
+                                    <label>Juegos 2021:</label>
                                     <span id="plJgosAuction" style="font-size: 24px;font-weight: bolder;"></span>
                                 </td>
                             </tr>
@@ -342,7 +342,7 @@
                                     <span id="plExpAuction" style="font-size: 24px;font-weight: bolder;"></span>
                                 </td>
                                 <td>
-                                    <label>Puntos 2020:</label>
+                                    <label>Puntos 2021:</label>
                                     <span id="plPtosAuction" style="font-size: 24px;font-weight: bolder;"></span>
                                 </td>
                             </tr>

@@ -276,11 +276,27 @@ class HomeController extends Controller
     function searchplayer(Request $request){
         $playerSearch = \DB::table('tbl_players_api')
             ->leftJoin('tbl_event', 'tbl_players_api.id_event', '=', 'tbl_event.id_event')
-            ->select('tbl_players_api.PlayerID', 'tbl_players_api.Status', 'tbl_players_api.Team', 'tbl_players_api.PositionCategory', 'tbl_players_api.Position', 'tbl_players_api.BirthDate', 'tbl_players_api.BirthCity', 'tbl_players_api.BirthCountry', 'tbl_players_api.PhotoUrl', 'tbl_players_api.YahooPlayerID', 'tbl_players_api.YahooName', 'tbl_players_api.Experience', 'tbl_players_api.last_year_points', 'tbl_players_api.last_year_games', 'tbl_players_api.YahooPrice', 'tbl_players_api.InjuryStatus')
+            ->select('tbl_players_api.PlayerID', 'tbl_players_api.Status', 'tbl_players_api.Team', 'tbl_players_api.PositionCategory', 
+            'tbl_players_api.Position', 'tbl_players_api.BirthDate', 'tbl_players_api.BirthCity', 'tbl_players_api.BirthCountry', 
+            'tbl_players_api.PhotoUrl', 'tbl_players_api.YahooPlayerID', 'tbl_players_api.YahooName', 'tbl_players_api.Experience',
+            'tbl_players_api.last_year_points', 'tbl_players_api.last_year_games', 'tbl_players_api.YahooPrice',
+            'tbl_players_api.InjuryStatus')
             ->where('tbl_players_api.YahooName', 'like', "%" . $request->get('search_player') . "%")
             ->where('tbl_players_api.taken', '=', 0)
             ->where('tbl_event.status_int', '=', 1)
             ->get();
+        //   $playerSearch = \DB::table('mlb_players_2022_allplayers')
+        //     ->leftJoin('tbl_event', 'mlb_players_2022_allplayers.id_event', '=', 'tbl_event.id_event')
+        //     ->select('mlb_players_2022_allplayers.PlayerID', 'mlb_players_2022_allplayers.Status', 'mlb_players_2022_allplayers.Team',
+        //      'mlb_players_2022_allplayers.PositionCategory', 'mlb_players_2022_allplayers.Position', 'mlb_players_2022_allplayers.BirthDate',
+        //      'mlb_players_2022_allplayers.BirthCity', 'mlb_players_2022_allplayers.BirthCountry', 'mlb_players_2022_allplayers.PhotoUrl',
+        //      'mlb_players_2022_allplayers.YahooPlayerID', 'mlb_players_2022_allplayers.YahooName', 'mlb_players_2022_allplayers.Experience',
+        //      'mlb_players_2022_allplayers.last_year_points', 'mlb_players_2022_allplayers.last_year_games', 
+        //      'mlb_players_2022_allplayers.YahooPrice','mlb_players_2022_allplayers.InjuryStatus')
+        //     ->where('mlb_players_2022_allplayers.YahooName', 'like', "%" . $request->get('search_player') . "%")
+        //     ->where('mlb_players_2022_allplayers.taken', '=', 0)
+        //     ->where('tbl_event.status_int', '=', 1)
+        //     ->get();
         echo json_encode($playerSearch);
     }
     //Carga la Subasta
@@ -445,3 +461,4 @@ class HomeController extends Controller
         echo json_encode($output);
     }
 }
+

@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>MLB Fantasy Draft 202</title>
+    <title>MLB Fantasy Draft 2022</title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -70,7 +70,7 @@
         <footer class="main-footer">
             <!-- To the right -->
             <div class="float-right d-none d-sm-inline">
-            <strong>Copyright &copy; 2021 <a href="mailto:carlosamaya1@gmail.com">Carlos Amaya</a>.</strong>
+            <strong>Copyright &copy; 2022 <a href="mailto:carlosamaya1@gmail.com">Carlos Amaya</a>.</strong>
             </div>
         </footer>
     </div>
@@ -129,6 +129,8 @@
         $(document).ready(function(){
             deleteAuction();
             $(".dropdown-toggle").dropdown();
+            //$( "#auctionModal" ).dialog({autoOpen: false, closeOnEscape: false});
+            //$( ".selector" ).dialog({ closeOnEscape: false });
             //Escucha de Canales y acciones
             //Channel for teams formation
             // channel3.bind('show-teams', function(data) {
@@ -143,39 +145,40 @@
             channel.bind('auction-created', function(data) {
                 $("#divCurrentAuction").show();
                 var currentAuctionPlayer = Object.values(data.message[0]);
-                $("#enSubasta").html('<div class="alert alert-success">En Subasta: '+currentAuctionPlayer[32]+'</div>');
+                console.log(currentAuctionPlayer);
+                $("#enSubasta").html('<div class="alert alert-success">En Subasta: '+currentAuctionPlayer[33]+'</div>');
                 //Imagen del Jusgador
-                $("#imgPlayerAuction").attr('src',currentAuctionPlayer[13]);
-                $("#txt_player_auction").val(currentAuctionPlayer[32]);
-                $("#playerPosAuction").text(currentAuctionPlayer[5]);
-                $("#playerStAuction").text(currentAuctionPlayer[1]);
-                $("#playerPosRanking").text(currentAuctionPlayer[16]);
-                $("#playerHltyAuction").text(currentAuctionPlayer[30]);
-                $("#plJgosAuction").text(currentAuctionPlayer[15]);
-                $("#txt_player_mlb_auction").val(currentAuctionPlayer[3]);
-                $("#plExpAuction").text(currentAuctionPlayer[33]);
-                $("#plPtosAuction").text(currentAuctionPlayer[14]);
+                $("#imgPlayerAuction").attr('src',currentAuctionPlayer[14]);
+                $("#txt_player_auction").val(currentAuctionPlayer[33]);
+                $("#playerPosAuction").text(currentAuctionPlayer[6]);
+                $("#playerStAuction").text(currentAuctionPlayer[2]);
+                $("#playerPosRanking").text(currentAuctionPlayer[17]);
+                $("#playerHltyAuction").text(currentAuctionPlayer[31]);
+                $("#plJgosAuction").text(currentAuctionPlayer[16]);
+                $("#txt_player_mlb_auction").val(currentAuctionPlayer[4]);
+                $("#plExpAuction").text(currentAuctionPlayer[34]);
+                $("#plPtosAuction").text(currentAuctionPlayer[15]);
                 //Datos del Jugador
-                if(currentAuctionPlayer[4] == "P"){
+                if(currentAuctionPlayer[5] == "P"){
                     $("#trPitchers").show();
                     $("#trBatters").hide();
-                    $("#pitIp").text(currentAuctionPlayer[18]);
-                    $("#pitWin").text(currentAuctionPlayer[19]);
-                    $("#pitLost").text(currentAuctionPlayer[20]);
-                    $("#pitSv").text(currentAuctionPlayer[21]);
-                    $("#pitHld").text(currentAuctionPlayer[22]);
-                    $("#pitQs").text(currentAuctionPlayer[23]);
-                    $("#pitBsv").text(currentAuctionPlayer[24]);
-                    $("#playerRosteredPit").text(currentAuctionPlayer[17]+"%");
+                    $("#pitIp").text(currentAuctionPlayer[19]);
+                    $("#pitWin").text(currentAuctionPlayer[20]);
+                    $("#pitLost").text(currentAuctionPlayer[21]);
+                    $("#pitSv").text(currentAuctionPlayer[22]);
+                    $("#pitHld").text(currentAuctionPlayer[23]);
+                    $("#pitQs").text(currentAuctionPlayer[24]);
+                    $("#pitBsv").text(currentAuctionPlayer[25]);
+                    $("#playerRosteredPit").text(currentAuctionPlayer[18]+"%");
                 }else{
                     $("#trPitchers").hide();
                     $("#trBatters").show();
-                    $("#batAb").text(currentAuctionPlayer[25]);
-                    $("#batHr").text(currentAuctionPlayer[26]);
-                    $("#batCe").text(currentAuctionPlayer[27]);
-                    $("#batSb").text(currentAuctionPlayer[28]);
-                    $("#batK").text(currentAuctionPlayer[29]);
-                    $("#playerRosteredBat").text(currentAuctionPlayer[17]+"%");
+                    $("#batAb").text(currentAuctionPlayer[26]);
+                    $("#batHr").text(currentAuctionPlayer[27]);
+                    $("#batCe").text(currentAuctionPlayer[28]);
+                    $("#batSb").text(currentAuctionPlayer[29]);
+                    $("#batK").text(currentAuctionPlayer[30]);
+                    $("#playerRosteredBat").text(currentAuctionPlayer[18]+"%");
                 }
              });
 
@@ -365,6 +368,7 @@
             });
             //Player live search
             $('#txt_player_search').keyup(function(event){
+                $("#imgPlayer").attr('src', '');
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -393,6 +397,7 @@
 
             //Select a Player
             $("#search_result").on('click',function(){
+                $("#imgPlayer").attr('src', '');
                 $('#action').prop("disabled", true);
                 //Re-habilitamos los options
                 for(var it=0; it < 191 ; it++){
