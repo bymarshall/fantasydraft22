@@ -19,8 +19,15 @@
                     <tbody>
                         <tr>
                             <td>
-                                <img src="{{ $team_data->avatar_txt }}"/>
+                                <img style="height:100px; weigth:100px;" src="{{ $team_data->avatar_txt }}"/>
                                 <span id="nameFantasyTeam" style="font-size:26px;font-weigth:bolder">{{ trim($team_data->name_txt) }} </span>
+                                <select style="visibility:hidden;display:none" id="idTeamFavs" name="idTeamFavs">
+                                    <?php
+                                        foreach($team_favs as $fav){
+                                            echo "<option value ='".$fav->PlayerID."'>".$fav->PlayerID."</option>";
+                                        }
+                                    ?>
+                                </select>
                                 {{-- Rol: { { trim( $ user_role[0] -> id_rol) } } --}}
                             </td>
                             <td>
@@ -88,7 +95,7 @@
                                           <div class="panel-heading" aling="center"><h2><img src="{{ asset('storage/img/mlb.png') }}" width="10%" height="10%"/> Detalles del Jugador</h2>
                                           </div>
                                           <div class="panel-body">
-                                              <form id="auction_form" action="subasta" method="POST">
+                                            <form id="auction_form" action="subasta" method="POST">
                                               <table class="playerDetail">
                                                   <tr>
                                                       <td rowspan="6">
@@ -96,7 +103,7 @@
                                                               <img id="imgPlayer" alt="" src="" href="#" style="width: 150px" />
                                                           </div>
                                                       </td>
-<!--                                                     <td  colspan="3">
+                                                    <!-- <td  colspan="3">
                                                           <label>Cargar Subasta Cerrada:</label>
                                                           <input type="checkbox" id="chk_subasta" checked disabled/>
                                                       </td>-->
@@ -294,6 +301,7 @@
                     </div>
                     <div class="card-body">
                         <div id="enSubasta"></div>
+                        <div id="favPlayer"></div>
                         <table class="table table-borderless" id="currentAuction">
                             <tr>
                                 <td rowspan="6">

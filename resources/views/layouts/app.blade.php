@@ -25,7 +25,8 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">Home</a>
+                <a class="navbar-brand" href="{{ url('/home') }}">subasta</a>
+                <a class="navbar-brand" href="{{ url('/settings') }}">eventos</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -80,8 +81,10 @@
     <script type="application/javascript" src="{{ asset('js/bootstrap.min.js') }}" ></script>
     <script type="application/javascript" src="{{ asset('js/pusher.min.js') }}" ></script>
 {{--    <script type="application/javascript" src="https://js.pusher.com/3.1/pusher.min.js"></script>--}}
+
     <script type="application/javascript">
         var playersArray = new Array();
+        var playersArrayFavs = new Array();
         var idPlayerEvent = "";
         const positionsArr = ["C","CI","MI","UTY","OF","P","RP","BN"];
         var montoBase = 0;
@@ -94,6 +97,7 @@
         cluster: 'mt1',
         forceTLS: true
         });
+
         //Eliminar una subasta ya creada
         function deleteAuction(idAuction){
             if (typeof idAuction !== 'undefined') {
@@ -117,6 +121,30 @@
                 }
             }
         };
+
+        //Eliminar una favorito
+        function deleteFavs(idFav){
+            if (typeof idFav !== 'undefined') {
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url: "{{ route('settings.deletefavs') }}",
+                    method: "POST",
+                    data: {
+                        'idFav': idFav,
+                        'idTeamsEvents' : $("#idTeamsEventFavs").val(),
+                        'idEvent': $("#idEventFavs").val()                                
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        alert("Se ha borrado #" + idFav + " de favoritos!");
+                        location.reload(true);
+                    }
+                });
+            }
+        };        
+
         // Subscribe to the channel we specified in our Laravel Event
         var channel = pusher.subscribe('auction-created-channel');
         //var channel2 = pusher.subscribe('closeBidChannel');
@@ -125,9 +153,11 @@
         //var channel5 = pusher.subscribe('auctionLoaded');
         var channel6 = pusher.subscribe('deleteBidChannel');
         //Delete Auction deleteAuction
+
         ///JQuery Initiator
         $(document).ready(function(){
             deleteAuction();
+            deleteFavs();
             $(".dropdown-toggle").dropdown();
             //$( "#auctionModal" ).dialog({autoOpen: false, closeOnEscape: false});
             //$( ".selector" ).dialog({ closeOnEscape: false });
@@ -145,8 +175,17 @@
             channel.bind('auction-created', function(data) {
                 $("#divCurrentAuction").show();
                 var currentAuctionPlayer = Object.values(data.message[0]);
-                console.log(currentAuctionPlayer);
+                //console.log("Auction: "+$("#idTeamFavs").val()[0]);
                 $("#enSubasta").html('<div class="alert alert-success">En Subasta: '+currentAuctionPlayer[33]+'</div>');
+
+                $("#idTeamFavs > option").each(function() {
+                    if (this.value == currentAuctionPlayer[0])
+                    {
+                        $("#favPlayer").html('<div class="alert alert-danger">Este Jugador esta en tus Favoritos</div>');
+                        break;
+                    }
+                });
+
                 //Imagen del Jusgador
                 $("#imgPlayerAuction").attr('src',currentAuctionPlayer[14]);
                 $("#txt_player_auction").val(currentAuctionPlayer[33]);
@@ -198,6 +237,7 @@
                 $('#auction_form')[0].reset();
                 $('#form_output').html('');
             });
+
             //Inicia Subasta Manual
             $('#iniciaSubasta').on('click', function(){
                if($("#txt_player").val().trim() != ""){ 
@@ -231,6 +271,144 @@
                    $("#txt_player_search").focus();
                }
             });
+
+            /* INICIO CODIGO PARA AGREGAR PLAYERS A FAVORITOS*/
+            //Agrega Player a los favoritos del Equipo
+            $('#agregarFavs').on('click', function()
+            {
+                if($("#txt_player_favs").val().trim() != ""){ 
+                   $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        url: "{{ route('settings.addplayertofavs') }}",
+                        method:"POST",
+                        data:{
+                            'idPlayer': $("#playerIDapi_favs").val().trim(),
+                            'idTeamsEvents' : $("#idTeamsEventFavs").val(),
+                            'idEvent': $("#idEventFavs").val()
+                        },
+                        dataType:"json",
+                        success:function(data){
+                            console.log('Jugador agregado a favs:'+$("#playerIDapi_favs").val().trim());
+                            window.location.reload(true);
+                        }
+                    });                     
+                }else{
+                   alert("Debe seleccionar un jugador!");
+                   $("#txt_player_search_favs").focus();
+               }
+            });
+
+            //Player live search FAVS
+            $('#txt_player_search_favs').keyup(function(event)
+            {
+                $("#imgPlayer_favs").attr('src', '');
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url: "{{ route('home.searchplayer') }}",
+                    method:"GET",
+                    data:{
+                        search_player: $('#txt_player_search_favs').val().trim()
+                    },
+                    dataType:"json",
+                    success:function(data){
+                        $("#search_result_favs").empty();
+                        playersArrayFavs = new Array();
+                        if(data.length > 0){
+                            for(var i=0;i<data.length;i++)
+                            {
+                                playersArrayFavs[i] = data[i];
+                                $("#search_result_favs").append('<option value="'+i+'">'+data[i].YahooName+'</option>');
+                            }
+                        }else{
+                            $("#search_result_favs").append('<option selected="selected">No hay Coincidencias</option>');
+                        }
+                    }
+                });
+            });
+
+            //Select a Player in favs
+            $("#search_result_favs").on('click',function(){
+                $("#imgPlayer_favs").attr('src', '');
+                //$('#action').prop("disabled", true);
+                //Re-habilitamos los options
+                var valorYahooFavs = playersArrayFavs[$("option:selected",this).val()].YahooPrice;
+                var playerIDapiFavs = playersArrayFavs[$("option:selected",this).val()].PlayerID;
+                //$("#txt_valor_puja option[value=2]").attr('selected','selected');
+                //Re-habilitamos las posiciones
+                positionsArr.forEach(element => function(){
+                    $("#sel_pos_favs option[value="+element+"]").removeAttr('disabled');
+                    $("#sel_pos_favs option[value="+element+"]").removeAttr('selected');
+                });
+
+                $("#imgPlayer_favs").attr('src',playersArrayFavs[$("option:selected",this).val()].PhotoUrl);
+                $("#txt_player_photo_favs").val(playersArrayFavs[$("option:selected",this).val()].PhotoUrl);
+                $("#imgPlayer_favs").attr('alt',playersArrayFavs[$("option:selected",this).val()].YahooName);
+                $("#txt_player_favs").val(playersArrayFavs[$("option:selected",this).val()].YahooName);
+                $("#txt_player_mlb_favs").val(playersArrayFavs[$("option:selected",this).val()].Team);
+                $("#playerPos_favs").text(playersArrayFavs[$("option:selected",this).val()].Position);
+                $("#playerOrig_favs").text(playersArrayFavs[$("option:selected",this).val()].BirthCity+"-"+playersArrayFavs[$("option:selected",this).val()].BirthCountry);
+                $("#playerSt_favs").text(playersArrayFavs[$("option:selected",this).val()].Status);
+                $("#playerHlty_favs").text(playersArrayFavs[$("option:selected",this).val()].InjuryStatus);
+                $("#plJgos_favs").text(playersArrayFavs[$("option:selected",this).val()].last_year_games);
+                $("#plPtos_favs").text(playersArrayFavs[$("option:selected",this).val()].last_year_points);
+                $("#txt_valor_favs").val(valorYahooFavs);
+                $("#playerIDapi_favs").val(playerIDapiFavs);
+
+                //Validamos POS
+                /* opciones:
+                    2B,3B,C,CF,DH,LF,OF,P,PH,PR,RF,RP,SP,SS
+                */
+                switch(playersArrayFavs[$("option:selected",this).val()].Position){
+                    case "P": case "SP":  case "RP":
+                            $("#sel_pos_favs option[value=P]").removeAttr('disabled');
+                            $("#sel_pos_favs option[value=P]").attr('selected','selected');
+                            $("#sel_pos_favs option[value=RP]").removeAttr('disabled');
+                            $("#sel_pos_favs option[value=RP]").removeAttr('selected');
+
+                            $("#sel_pos_favs option[value=C]").attr('disabled','disabled');
+                            $("#sel_pos_favs option[value=CI]").attr('disabled','disabled');
+                            $("#sel_pos_favs option[value=UTY]").attr('disabled','disabled');
+                            $("#sel_pos_favs option[value=MI]").attr('disabled','disabled');
+                            $("#sel_pos_favs option[value=OF]").attr('disabled','disabled');
+
+                            $("#sel_pos_favs option[value=C]").removeAttr('selected');
+                            $("#sel_pos_favs option[value=CI]").removeAttr('selected');
+                            $("#sel_pos_favs option[value=UTY]").removeAttr('selected');
+                            $("#sel_pos_favs option[value=MI]").removeAttr('selected');
+                            $("#sel_pos_favs option[value=OF]").removeAttr('selected');
+                        break;
+                    default:
+                            $("#sel_pos_favs option[value=C]").removeAttr('disabled');
+                            $("#sel_pos_favs option[value=C]").attr('selected','selected');
+                            $("#sel_pos_favs option[value=CI]").removeAttr('disabled');
+                            $("#sel_pos_favs option[value=UTY]").removeAttr('disabled');
+                            $("#sel_pos_favs option[value=MI]").removeAttr('disabled');
+                            $("#sel_pos_favs option[value=OF]").removeAttr('disabled');
+                            $("#sel_pos_favs option[value=CI]").removeAttr('selected');
+                            $("#sel_pos_favs option[value=UTY]").removeAttr('selected');
+                            $("#sel_pos_favs option[value=MI]").removeAttr('selected');
+                            $("#sel_pos_favs option[value=OF]").removeAttr('selected');
+
+                            $("#sel_pos_favs option[value=P]").attr('disabled','disabled');
+                            $("#sel_pos_favs option[value=RP]").attr('disabled','disabled');
+                            $("#sel_pos_favs option[value=RP]").removeAttr('selected');
+                            $("#sel_pos_favs option[value=P]").removeAttr('selected');
+                        break;
+                }
+
+                // for(var t=valorYahoo-1; t>0 ; t--){
+                //     $("#txt_valor_puja option[value="+t+"]").attr('disabled','disabled');
+                // }
+                // //Set Value
+                // console.log("BASE-YAHOO:"+valorYahoo);
+                // $("#txt_valor_puja option[value="+(parseInt(valorYahoo))+"]").attr('selected','selected');
+            });
+            /* FIN CODIGO PARA AGREGAR PLAYERS A FAVORITOS*/
+
             //Limpia el modal cuando se cierra
             $('#auctionModal').on('hidden.bs.modal', function(){
                 $(this).data('modal', null);
@@ -261,6 +439,7 @@
                 });
                 $('#form_output').html("");
             });
+
             //Inicia subasta
             $('#auction_form').on('submit', function(event){
                 event.preventDefault();
@@ -366,6 +545,7 @@
                     $("#email_pwd").focus();
                 }
             });
+
             //Player live search
             $('#txt_player_search').keyup(function(event){
                 $("#imgPlayer").attr('src', '');

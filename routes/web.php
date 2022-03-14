@@ -33,7 +33,17 @@ Route::get('home/searchplayer','HomeController@searchplayer')->name('home.search
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/settings', 'AuctionSettingsController@index')->name('settings');
+
+Route::post('settings/addplayertofavs','AuctionSettingsController@addPlayerToFavs')->name('settings.addplayertofavs');
+
+Route::post('settings/deletefavs','AuctionSettingsController@deleteFavs')->name('settings.deletefavs');
 /*
+Route::get('/events', function () {
+    return view('events');
+});
+
 Route::get('home/generatepwd',function($secret){
     //$password = Hash::make('secret');
     $password = Hash::make($secret);

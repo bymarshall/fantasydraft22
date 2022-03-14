@@ -103,7 +103,7 @@ class HomeController extends Controller
         $data_team = \DB::table('tbl_teams')
             ->leftJoin('tbl_teams_event', 'tbl_teams.id_team', '=', 'tbl_teams_event.id_team')
             ->leftJoin('tbl_event', 'tbl_teams_event.id_event', '=', 'tbl_event.id_event')
-            ->select('tbl_teams_event.id_teams_event', 'tbl_teams.name_txt', 'tbl_teams.avatar_txt')
+            ->select('tbl_teams_event.id_teams_event', 'tbl_teams.name_txt', 'tbl_teams.avatar_txt', 'tbl_event.id_event')
             ->where('tbl_teams_event.status_int', 1)->where('tbl_event.status_int', 1)->where('tbl_teams.id_user', $id_user)
             ->get();
 
@@ -151,14 +151,21 @@ class HomeController extends Controller
         // Finished Bids
         $bids_finished = $this->getAllBids();
 
+        //tommamos los favoritos
+        $team_favs = \DB::table('tbl_teams_event_favs_player')
+            ->select('PlayerID')
+            ->where('id_teams_event', $data_team[0]->id_teams_event)->where('id_event', $data_team[0]->id_event)
+            ->get();        
+
         // user role
         $user_role = \DB::table('tbl_user_role')->where('id_user', $id_user)->where('status_int', 1)->get();
         if((!$user_role) || (!$data_team) || (!$all_teams))
         {
             abort(404);
         }
-        return view('home', ['table_teams'=> $ftsyTeams, 'all_teams' => $all_teams, 'team_data' => $data_team[0], 'user_role' => $user_role, 'bids_finished' => $bids_finished, 'team_bids_finished' => $team_bids_finished]);
+        return view('home', ['table_teams'=> $ftsyTeams, 'all_teams' => $all_teams, 'team_data' => $data_team[0], 'user_role' => $user_role, 'bids_finished' => $bids_finished, 'team_bids_finished' => $team_bids_finished, 'team_favs' => $team_favs]);
     }
+
     //Inicia Subasta Manual
     function initmanualauction(Request $request){
         $player_in_auction = \DB::table('tbl_players_api')
@@ -169,6 +176,7 @@ class HomeController extends Controller
         event(new AuctionCreated($player_in_auction));
         return $player_in_auction;
     }
+    
     //Elimina una subasta
     function deleteauction(Request $request){
         $error =  false;
@@ -244,6 +252,7 @@ class HomeController extends Controller
 
         echo json_encode($output);
     }
+
     //Generar un pwd
     function generatepwd(Request $request){
         $email = trim($request->get('email'));
@@ -261,6 +270,7 @@ class HomeController extends Controller
         }
         echo json_encode($response);
     }
+
     //Actualiza Precio a Jugador
     function updatePlayerPrice(Request $request){
         $idPlayer = trim($request->get('idplayer'));
@@ -272,6 +282,7 @@ class HomeController extends Controller
     
         echo json_encode($response);
     }
+
     //Buscar jugador para subastar
     function searchplayer(Request $request){
         $playerSearch = \DB::table('tbl_players_api')
@@ -285,18 +296,6 @@ class HomeController extends Controller
             ->where('tbl_players_api.taken', '=', 0)
             ->where('tbl_event.status_int', '=', 1)
             ->get();
-        //   $playerSearch = \DB::table('mlb_players_2022_allplayers')
-        //     ->leftJoin('tbl_event', 'mlb_players_2022_allplayers.id_event', '=', 'tbl_event.id_event')
-        //     ->select('mlb_players_2022_allplayers.PlayerID', 'mlb_players_2022_allplayers.Status', 'mlb_players_2022_allplayers.Team',
-        //      'mlb_players_2022_allplayers.PositionCategory', 'mlb_players_2022_allplayers.Position', 'mlb_players_2022_allplayers.BirthDate',
-        //      'mlb_players_2022_allplayers.BirthCity', 'mlb_players_2022_allplayers.BirthCountry', 'mlb_players_2022_allplayers.PhotoUrl',
-        //      'mlb_players_2022_allplayers.YahooPlayerID', 'mlb_players_2022_allplayers.YahooName', 'mlb_players_2022_allplayers.Experience',
-        //      'mlb_players_2022_allplayers.last_year_points', 'mlb_players_2022_allplayers.last_year_games', 
-        //      'mlb_players_2022_allplayers.YahooPrice','mlb_players_2022_allplayers.InjuryStatus')
-        //     ->where('mlb_players_2022_allplayers.YahooName', 'like', "%" . $request->get('search_player') . "%")
-        //     ->where('mlb_players_2022_allplayers.taken', '=', 0)
-        //     ->where('tbl_event.status_int', '=', 1)
-        //     ->get();
         echo json_encode($playerSearch);
     }
     //Carga la Subasta
@@ -390,6 +389,7 @@ class HomeController extends Controller
         );
         echo json_encode($output);
     }
+
     //Crear la Subasta
     function postdata(Request $request){
         $validation = Validator::make($request->all(),[
