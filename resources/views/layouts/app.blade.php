@@ -26,7 +26,7 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/home') }}">subasta</a>
-                <a class="navbar-brand" href="{{ url('/settings') }}">eventos</a>
+                <a class="navbar-brand" href="{{ url('/settings') }}">configuracion</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -173,6 +173,8 @@
             });
 
             channel.bind('auction-created', function(data) {
+                $("#favPlayer").html("");
+                $("#enSubasta").html("");
                 $("#divCurrentAuction").show();
                 var currentAuctionPlayer = Object.values(data.message[0]);
                 //console.log("Auction: "+$("#idTeamFavs").val()[0]);
@@ -182,7 +184,6 @@
                     if (this.value == currentAuctionPlayer[0])
                     {
                         $("#favPlayer").html('<div class="alert alert-danger">Este Jugador esta en tus Favoritos</div>');
-                        break;
                     }
                 });
 
@@ -443,6 +444,8 @@
             //Inicia subasta
             $('#auction_form').on('submit', function(event){
                 event.preventDefault();
+                $("#favPlayer").html("");
+                $("#enSubasta").html("");                
                 var form_data = $(this).serialize();
                 if(confirm('Confirme que desea cargar la subasta'))
                 {
