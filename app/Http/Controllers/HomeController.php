@@ -252,6 +252,15 @@ class HomeController extends Controller
 
         echo json_encode($output);
     }
+    
+    //Cancelar una subasta activa
+    function cancelauction()
+    {
+        $finSubasta = "{'estado':'cancelada'}";
+        $output ='<div class="alert alert-warning">Subasta Cancelada!</div>';
+        event(new AuctionClosed($finSubasta));
+        echo json_encode($output);
+    }
 
     //Generar un pwd
     function generatepwd(Request $request){

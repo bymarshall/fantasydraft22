@@ -204,7 +204,8 @@
                                                       <div class="modal-footer">
                                                           <input type="button" id="iniciaSubasta" value="Iniciar Subasta" class="btn btn-info"/>
                                                           <input type="submit" name="submit" id="action" value="Cargar Subasta" class="btn btn-info" disabled/>
-                                                          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                                          <input type="button" id="cancelarSubasta" value="Cancelar Subasta" class="btn btn-danger" disabled/>
+                                                          {{-- <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button> --}}
                                                       </div><!-- MODAL FOOTER-->
                                                   </div><!-- FORM GROUP-->
                                           </div><!-- PANEL BODY -->

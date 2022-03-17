@@ -20,6 +20,8 @@ Route::post('home/initmanualauction', 'HomeController@initmanualauction')->name(
 
 Route::post('home/closeauction', 'HomeController@closeauction')->name('home.closeauction');
 
+Route::post('home/cancelauction', 'HomeController@cancelauction')->name('home.cancelauction');
+
 Route::post('home/loadauction', 'HomeController@loadauction')->name('home.loadauction');
 
 Route::post('home/generatepwd', 'HomeController@generatepwd')->name('home.generatepwd');
