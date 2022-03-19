@@ -38,13 +38,13 @@ Route::get('/', function () {
 
 Route::get('/settings', 'AuctionSettingsController@index')->name('settings');
 
+Route::get('/events', 'EventsController@index')->name('events');
+
+Route::get('events/searchevents', 'EventsController@searchevents')->name('events.searchevents');
+
 Route::post('settings/addplayertofavs','AuctionSettingsController@addPlayerToFavs')->name('settings.addplayertofavs');
 
 Route::post('settings/deletefavs','AuctionSettingsController@deleteFavs')->name('settings.deletefavs');
-
-Route::get('error', function () {
-    abort(500);
-});
 
 /*
 Route::get('home/generatepwd',function($secret){

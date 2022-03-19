@@ -26,12 +26,14 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/home') }}">subasta</a>
-                <a class="navbar-brand" href="{{ url('/settings') }}">configuracion</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
+                @if (Route::has('login'))
+                    <a class="navbar-brand" href="{{ url('/home') }}">subasta</a>
+                    <a class="navbar-brand" href="{{ url('/settings') }}">configuracion</a>
+                    <a class="navbar-brand" href="{{ url('/events') }}">eventos</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                @endif
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
@@ -70,9 +72,10 @@
         </main>
           <!-- Main Footer -->
         <footer class="main-footer">
-            <!-- To the right -->
-            <div class="float-right d-none d-sm-inline">
-            <strong>Copyright &copy; 2022 <a href="mailto:carlosamaya1@gmail.com">Carlos Amaya</a>.</strong>
+            <div class="row">
+                <div class="col-md-8 off-set-4">
+                    <strong>Copyright &copy; 2022 <a href="mailto:carlosamaya1@gmail.com">Carlos Amaya</a>.</strong>
+                </div>
             </div>
         </footer>
     </div>
@@ -94,10 +97,12 @@
                 addfavs: "{{ route('settings.addplayertofavs') }}",
                 initmanualauction: "{{ route('home.initmanualauction') }}",
                 deletefavs: "{{ route('settings.deletefavs') }}",
-                deleteauction: "{{ route('home.deleteauction') }}"
+                deleteauction: "{{ route('home.deleteauction') }}",
+                searchevents: "{{ route('events.searchevents') }}"
             }
         };
     </script>
     <script type="application/javascript" src="{{ asset('js/businessLogic.js') }}" ></script>
+    <script type="application/javascript" src="{{ asset('js/eventsLogic.js') }}" ></script>
 </body>
 </html>
