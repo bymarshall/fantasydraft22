@@ -20,6 +20,8 @@ Route::post('home/initmanualauction', 'HomeController@initmanualauction')->name(
 
 Route::post('home/closeauction', 'HomeController@closeauction')->name('home.closeauction');
 
+Route::post('home/cancelauction', 'HomeController@cancelauction')->name('home.cancelauction');
+
 Route::post('home/loadauction', 'HomeController@loadauction')->name('home.loadauction');
 
 Route::post('home/generatepwd', 'HomeController@generatepwd')->name('home.generatepwd');
@@ -33,6 +35,17 @@ Route::get('home/searchplayer','HomeController@searchplayer')->name('home.search
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/settings', 'AuctionSettingsController@index')->name('settings');
+
+Route::post('settings/addplayertofavs','AuctionSettingsController@addPlayerToFavs')->name('settings.addplayertofavs');
+
+Route::post('settings/deletefavs','AuctionSettingsController@deleteFavs')->name('settings.deletefavs');
+
+Route::get('error', function () {
+    abort(500);
+});
+
 /*
 Route::get('home/generatepwd',function($secret){
     //$password = Hash::make('secret');

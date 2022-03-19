@@ -19,8 +19,15 @@
                     <tbody>
                         <tr>
                             <td>
-                                <img src="{{ $team_data->avatar_txt }}"/>
+                                <img style="height:100px; weigth:100px;" src="{{ $team_data->avatar_txt }}"/>
                                 <span id="nameFantasyTeam" style="font-size:26px;font-weigth:bolder">{{ trim($team_data->name_txt) }} </span>
+                                <select style="visibility:hidden;display:none" id="idTeamFavs" name="idTeamFavs">
+                                    <?php
+                                        foreach($team_favs as $fav){
+                                            echo "<option value ='".$fav->PlayerID."'>".$fav->PlayerID."</option>";
+                                        }
+                                    ?>
+                                </select>
                                 {{-- Rol: { { trim( $ user_role[0] -> id_rol) } } --}}
                             </td>
                             <td>
@@ -56,235 +63,167 @@
                 }
                 ?>
             </div>
-                <?php
-                if($user_role[0]->id_rol == '1') {
-                ?>
-               <!-- MODAL PLAYER AUCTION -->
-              <div id="auctionModal" class="modal fade" tabindex="-1" role="dialog">
-                  <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
-                      <div class="modal-content" style="background-color: #2994d6;">
-                          <div class="modal-header">
-                              <h4 class="modal-title"><span id="subTitle">SUBASTAR</span> JUGADOR</h4>
-                          </div>
-                          <div class="modal-body">
-                              {{ csrf_field() }}
-                              <span id="form_output"></span>
-                              <div class="container box">
-                                  <div class="row">
-                                  <div class="col-sm-4">
-                                      <div class="panel panel-default">
-                                          <div class="panel-heading">
-                                              <label>Buscar Jugador <i class="fa fa-search" aria-hidden="true"></i>:</label>
-                                              <input type="text" placeholder="Nombre del Jugador" id="txt_player_search" name="txt_player_search"  style="width: 180px;"/>
-                                          </div>
-                                          <div class="panel-body">
-                                          <select class="custom-select" id="search_result" multiple style="height:320px;">
-                                          </select>
-                                          </div>
-                                      </div>
-                                  </div>
-                                  <div class="col-sm-8">
-                                      <div class="panel panel-default">
-                                          <div class="panel-heading" aling="center"><h2><img src="{{ asset('storage/img/mlb.png') }}" width="10%" height="10%"/> Detalles del Jugador</h2>
-                                          </div>
-                                          <div class="panel-body">
-                                              <form id="auction_form" action="subasta" method="POST">
-                                              <table class="playerDetail">
-                                                  <tr>
-                                                      <td rowspan="6">
-                                                          <div style="margin: 0 auto; width: 150px">
-                                                              <img id="imgPlayer" alt="" src="" href="#" style="width: 150px" />
-                                                          </div>
-                                                      </td>
-<!--                                                     <td  colspan="3">
-                                                          <label>Cargar Subasta Cerrada:</label>
-                                                          <input type="checkbox" id="chk_subasta" checked disabled/>
-                                                      </td>-->
-                                                  </tr>
-                                                  <tr>
-                                                  <td colspan="2">
-                                                      <div class="form-group">
-                                                          <label>Jugador:</label>
-                                                          <input type="text" readonly placeholder="Nombre del Jugador" id="txt_player" name="txt_player" />
-                                                      </div>
-                                                      <div class="form-group">
-                                                          <input type="hidden" id="txt_player_photo" name="txt_player_photo" />
-                                                          <input type="hidden" id="playerIDapi" name="playerIDapi" />
-                                                      </div>
-                                                  </td>
-                                                  <td>
-                                                      <label>Posicion:</label>
-                                                      <span id="playerPos"></span>
-                                                  </td>
-                                                  </tr>
-                                                  <tr>
-                                                      <td>
-                                                          <label>Roster MLB:</label>
-                                                          <span id="playerSt" style="white-space: nowrap; overflow: hidden;"></span>
-                                                      </td>
-                                                      <td>
-                                                          <label>Health:</label>
-                                                          <span id="playerHlty" style="white-space: nowrap; overflow: hidden;"></span>
-                                                      </td>
-                                                      <td>
-                                                          <label>Juegos 2020:</label>
-                                                          <span id="plJgos" style="font-size: 24px;font-weight: bolder;"></span>
-                                                      </td>
-                                                  </tr>
-                                                  <tr>
-                                                      <td>
-                                                          <div class="form-group">
-                                                              <label>MLB:</label>
-                                                              <input type="text" style="width: 60px;" readonly id="txt_player_mlb" name="txt_player_mlb" />
-                                                          </div>
-                                                      </td>
-                                                      <td align = "left">
-                                                          <div class="form-group">
-                                                              <label>Roster<BR />Fantasy:</label>
-                                                              <select id="sel_pos" name="sel_pos">
-                                                                  <option value="C"> C</option>
-                                                                  <option value="CI">CI</option>
-                                                                  <option value="MI">MI</option>
-                                                                  <option value="UTY">UTY</option>
-                                                                  <option value="BN">BN</option>
-                                                                  <option value="OF">OF</option>
-                                                                  <option value="P">P</option>
-                                                                  <option value="RP">RP</option>
-                                                              </select>
-                                                          </div><!-- FORM GROUP-->
-                                                      </td>
-                                                      <td>
-                                                          <label>Puntos 2020:</label>
-                                                          <span id="plPtos" style="font-size: 24px;font-weight: bolder;"></span>
-                                                      </td>
-                                                  </tr>
-                                                  <tr>
-                                                      <td colspan="3">
-                                                          <label>Origen:</label>
-                                                          <span id="playerOrig"></span>
-                                                      </td>
-                                                  </tr>
-                                                  <tr>
-                                                      <td>
-                                                          <div class="form-group">
-                                                              <label>Precio Yahoo:</label>
-                                                              <input type="text" placeholder="Valor" id="txt_valor" name="txt_valor" style="width: 60px;"/>
-                                                              <input type="button" value="Actualizar Precio" id="actualizaPrecio"/>
-                                                          </div><!-- FORM GROUP-->
-                                                      </td>
-                                                      <td>
-                                                          <div class="form-group">
-                                                              <label>Precio Puja:</label>
-                                                              <select id="txt_valor_puja" name="txt_valor_puja" style="width: 60px;">
-                                                              <!-- <input type="text" placeholder="Valor" id="txt_valor_puja" name="txt_valor_puja" style="width: 60px;"/> -->
-                                                          </div><!-- FORM GROUP-->
-                                                      </td>
-                                                      <td>
-                                                          <div class="form-group">
-                                                              <label>Ganador:</label>
-                                                              <select id="sel_equipos" name="sel_equipos">
-                                                                  <?php
-                                                                  foreach($all_teams as $team){
-                                                                      echo "<option value=".$team->id_teams_event.">".$team->name_txt."</option>";
-                                                                  }
-                                                                  ?>
-                                                              </select>
-                                                          </div><!-- FORM GROUP-->
-                                                      </td>
-                                                  </tr>
-                                              </table>
-                                              <div class="form-group">
-                                                      <div class="modal-footer">
-                                                          <input type="button" id="iniciaSubasta" value="Iniciar Subasta" class="btn btn-info"/>
-                                                          <input type="submit" name="submit" id="action" value="Cargar Subasta" class="btn btn-info" disabled/>
-                                                          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                                                      </div><!-- MODAL FOOTER-->
-                                                  </div><!-- FORM GROUP-->
-                                          </div><!-- PANEL BODY -->
-                                      </div>
-                                  </div>
-                                  </div><!-- row-->
-                              </div><!-- container box -->
-                          </div><!-- MODAL BODY -->
-
-                      </form>
-                      </div><!-- MODAL CONTENT -->
-                  </div><!-- MODAL DIALOG -->
-              </div> <!-- MODAL DIV -->
-            <?php
-                }
-            ?>
                 <!--</div>  DIV ROW -->
         </div>
     </div>
 </div>
 <div class="container">
     <div class="container-fluid">
-        <!-- FIRST ROW -->
+        <?php
+        if($user_role[0]->id_rol == '1') {
+        ?>
+        <!-- FIRST ROW : SOLO PARA ADMINS QUE PUEDEN INICIAR UNA SUBASTA -->
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        Así va tu Equipo: <b>{{ $team_data->name_txt}}</b> <img style="height:33px; weigth:33px;" src="{{ $team_data->avatar_txt }}" />
+                        Aqui puedes iniciar la subasta de jugadores
                     </div>
                     <div class="card-body">
-                        <?php
-                            $index = 0;
-                            $row1 ="<div class='row'>";
-                            $row2 ="<div class='row'>";
-                            foreach($team_bids_finished as $data1){
-                                if($index < 6){
-                                    $row1 .= "<div class='col-md-2'><div class='card' align='center'><table><tr><td style='text-align:center;'>";
-                                    $row1 .= "<img style='height:75px; weigth:75px;' src='";
-                                    $row1 .= $data1->pl_avatar;
-                                    $row1 .= "'/><BR /> ".$data1->Jugador."<BR /> Posición: ".$data1->posPlayer;
-                                    $row1 .="<BR /> Precio: ".$data1->PrecioFinal."</td></tr></table></div></div>";
-                                }else{
-                                    $row2 .= "<div class='col-md-2'><div class='card' align='center'><table><tr><td style='text-align:center;'>";
-                                    $row2 .= "<img style='height:75px; weigth:75px;' src='";
-                                    $row2 .= $data1->pl_avatar."'/><BR /> ".$data1->Jugador."<BR /> Posición: ".$data1->posPlayer;
-                                    $row2 .="<BR /> Precio: ".$data1->PrecioFinal."</td></tr></table></div></div>";
-                                }
-                                $index++;
-                            }
-                            $row1 .="</div>";
-                            $row2 .="</div>";
-                            echo $row1.$row2;
-                        ?>
+                        {{ csrf_field() }}
+                        <span id="form_output"></span>
+                        <div class="container box">
+                            <div class="row">
+                            <div class="col-sm-4">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <label>Buscar Jugador <i class="fa fa-search" aria-hidden="true"></i>:</label>
+                                        <input type="text" placeholder="Nombre del Jugador" id="txt_player_search" name="txt_player_search"  style="width: 180px;"/>
+                                    </div>
+                                    <div class="panel-body">
+                                    <select class="custom-select" id="search_result" multiple style="height:320px;">
+                                    </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" aling="center"><h2><img src="{{ asset('storage/img/mlb.png') }}" width="10%" height="10%"/> Detalles del Jugador</h2>
+                                    </div>
+                                    <div class="panel-body">
+                                      <form id="auction_form" action="subasta" method="POST">
+                                        <table class="playerDetail">
+                                            <tr>
+                                                <td rowspan="6">
+                                                    <div style="margin: 0 auto; width: 150px">
+                                                        <img id="imgPlayer" alt="" src="" href="#" style="width: 150px" />
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                            <td colspan="2">
+                                                <div class="form-group">
+                                                    <label>Jugador:</label>
+                                                    <input type="text" readonly placeholder="Nombre del Jugador" id="txt_player" name="txt_player" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="hidden" id="txt_player_photo" name="txt_player_photo" />
+                                                    <input type="hidden" id="playerIDapi" name="playerIDapi" />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <label>Posicion:</label>
+                                                <span id="playerPos"></span>
+                                            </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label>Roster MLB:</label>
+                                                    <span id="playerSt" style="white-space: nowrap; overflow: hidden;"></span>
+                                                </td>
+                                                <td>
+                                                    <label>Health:</label>
+                                                    <span id="playerHlty" style="white-space: nowrap; overflow: hidden;"></span>
+                                                </td>
+                                                <td>
+                                                    <label>Juegos 2021:</label>
+                                                    <span id="plJgos" style="font-size: 24px;font-weight: bolder;"></span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <label>MLB:</label>
+                                                        <input type="text" style="width: 60px;" readonly id="txt_player_mlb" name="txt_player_mlb" />
+                                                    </div>
+                                                </td>
+                                                <td align = "left">
+                                                    <div class="form-group">
+                                                        <label>Roster<BR />Fantasy:</label>
+                                                        <select id="sel_pos" name="sel_pos">
+                                                            <option value="C"> C</option>
+                                                            <option value="CI">CI</option>
+                                                            <option value="MI">MI</option>
+                                                            <option value="UTY">UTY</option>
+                                                            <option value="BN">BN</option>
+                                                            <option value="OF">OF</option>
+                                                            <option value="P">P</option>
+                                                            <option value="RP">RP</option>
+                                                        </select>
+                                                    </div><!-- FORM GROUP-->
+                                                </td>
+                                                <td>
+                                                    <label>Puntos 2021:</label>
+                                                    <span id="plPtos" style="font-size: 24px;font-weight: bolder;"></span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3">
+                                                    <label>Origen:</label>
+                                                    <span id="playerOrig"></span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <label>Precio Yahoo:</label>
+                                                        <input type="text" placeholder="Valor" id="txt_valor" name="txt_valor" style="width: 60px;"/>
+                                                        <input type="button" value="Actualizar Precio" id="actualizaPrecio"/>
+                                                    </div><!-- FORM GROUP-->
+                                                </td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <label>Precio Puja:</label>
+                                                        <select id="txt_valor_puja" name="txt_valor_puja" style="width: 60px;">
+                                                        <!-- <input type="text" placeholder="Valor" id="txt_valor_puja" name="txt_valor_puja" style="width: 60px;"/> -->
+                                                    </div><!-- FORM GROUP-->
+                                                </td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <label>Ganador:</label>
+                                                        <select id="sel_equipos" name="sel_equipos">
+                                                            <?php
+                                                            foreach($all_teams as $team){
+                                                                echo "<option value=".$team->id_teams_event.">".$team->name_txt."</option>";
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                    </div><!-- FORM GROUP-->
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <div class="form-group">
+                                                <div class="modal-footer">
+                                                    <input type="button" id="iniciaSubasta" value="Iniciar Subasta" class="btn btn-info"/>
+                                                    <input type="submit" name="submit" id="action" value="Cargar Subasta" class="btn btn-info" disabled/>
+                                                    <input type="button" id="cancelarSubasta" value="Cancelar Subasta" class="btn btn-danger" disabled/>
+                                                    {{-- <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button> --}}
+                                                </div><!-- MODAL FOOTER-->
+                                            </div><!-- FORM GROUP-->
+                                    </div><!-- PANEL BODY -->
+                                </div>
+                            </div>
+                            </div><!-- row-->
+                        </div><!-- container box -->                        
                     </div>
                 </div>
             </div>
         </div>
         <!-- END FIRST ROW -->
+        <?php
+            }
+        ?>
         <!-- SECOND ROW -->
-        <div class="row">
-            <div class="col-md-10">
-                <!-- lista de Subastas terminadas -->
-                <div class="card">
-                <div class="card-header">
-                    Recientes Subastas
-                </div>
-                <div class="card-body">
-                    @if (session('status'))
-                    <div class="alert alert-success" role="alert">
-                        {{ session('status') }}
-                    </div>
-                    @endif
-                    <div style="position: relative;height:270px;overflow: auto;display: block;">
-                        <table class="table table-borderless" id="slBids" style="height:270px;overflow-scrolling: auto;">
-                            <?php
-                                foreach($bids_finished as $bids){
-                                    echo "<tr style='height: 10px;'><td>".$bids->idBid."</td><td>".$bids->fantasy_team."</td><td>".$bids->Player."</td><td>".$bids->maxBid."</td></tr>";
-                                }
-                            ?>
-                        </table>
-                    </div>
-                </div>
-                </div>
-              </div>
-        </div>
-        <!-- END SECOND ROW -->
-        <!-- THIRD ROW -->
         <div class="row" id="divCurrentAuction" style="display:none;">
             <div class="col-md-12">
                 <!-- lista de Subastas terminadas -->
@@ -294,6 +233,7 @@
                     </div>
                     <div class="card-body">
                         <div id="enSubasta"></div>
+                        <div id="favPlayer"></div>
                         <table class="table table-borderless" id="currentAuction">
                             <tr>
                                 <td rowspan="6">
@@ -328,7 +268,7 @@
                                     <span id="playerHltyAuction" style="white-space: nowrap; overflow: hidden;"></span>
                                 </td>
                                 <td>
-                                    <label>Juegos 2020:</label>
+                                    <label>Juegos 2021:</label>
                                     <span id="plJgosAuction" style="font-size: 24px;font-weight: bolder;"></span>
                                 </td>
                             </tr>
@@ -342,7 +282,7 @@
                                     <span id="plExpAuction" style="font-size: 24px;font-weight: bolder;"></span>
                                 </td>
                                 <td>
-                                    <label>Puntos 2020:</label>
+                                    <label>Puntos 2021:</label>
                                     <span id="plPtosAuction" style="font-size: 24px;font-weight: bolder;"></span>
                                 </td>
                             </tr>
@@ -427,7 +367,71 @@
             </div>
         </div>
         <!-- END SECOND ROW -->
+        <!-- THIRD ROW -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        Así va tu Equipo: <b>{{ $team_data->name_txt}}</b> <img style="height:33px; weigth:33px;" src="{{ $team_data->avatar_txt }}" />
+                    </div>
+                    <div class="card-body">
+                        <?php
+                            $index = 0;
+                            $row1 ="<div class='row'>";
+                            $row2 ="<div class='row'>";
+                            foreach($team_bids_finished as $data1){
+                                if($index < 6){
+                                    $row1 .= "<div class='col-md-2'><div class='card' align='center'><table><tr><td style='text-align:center;'>";
+                                    $row1 .= "<img style='height:75px; weigth:75px;' src='";
+                                    $row1 .= $data1->pl_avatar;
+                                    $row1 .= "'/><BR /> ".$data1->Jugador."<BR /> Posición: ".$data1->posPlayer;
+                                    $row1 .="<BR /> Precio: ".$data1->PrecioFinal."</td></tr></table></div></div>";
+                                }else{
+                                    $row2 .= "<div class='col-md-2'><div class='card' align='center'><table><tr><td style='text-align:center;'>";
+                                    $row2 .= "<img style='height:75px; weigth:75px;' src='";
+                                    $row2 .= $data1->pl_avatar."'/><BR /> ".$data1->Jugador."<BR /> Posición: ".$data1->posPlayer;
+                                    $row2 .="<BR /> Precio: ".$data1->PrecioFinal."</td></tr></table></div></div>";
+                                }
+                                $index++;
+                            }
+                            $row1 .="</div>";
+                            $row2 .="</div>";
+                            echo $row1.$row2;
+                        ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END THIRD ROW -->
         <!-- FOURTH ROW -->
+        <div class="row">
+            <div class="col-md-12">
+                <!-- lista de Subastas terminadas -->
+                <div class="card">
+                <div class="card-header">
+                    Recientes Subastas
+                </div>
+                <div class="card-body">
+                    @if (session('status'))
+                    <div class="alert alert-success" role="alert">
+                        {{ session('status') }}
+                    </div>
+                    @endif
+                    <div style="position: relative;height:270px;overflow: auto;display: block;">
+                        <table class="table table-borderless" id="slBids" style="height:270px;overflow-scrolling: auto;">
+                            <?php
+                                foreach($bids_finished as $bids){
+                                    echo "<tr style='height: 10px;'><td>".$bids->idBid."</td><td>".$bids->fantasy_team."</td><td>".$bids->Player."</td><td>".$bids->maxBid."</td></tr>";
+                                }
+                            ?>
+                        </table>
+                    </div>
+                </div>
+                </div>
+              </div>
+        </div>
+        <!-- END FOURTH ROW -->
+        <!-- FIFTH ROW -->
         <div class="row">
             <!-- Result Table -->
           <div class="col-lg-12">

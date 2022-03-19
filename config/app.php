@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'fantasydraft21'),
+    'name' => env('APP_NAME', 'fantasydraft22'),
 
     /*
     |--------------------------------------------------------------------------
@@ -68,6 +68,17 @@ return [
     */
 
     'timezone' => 'UTC',
+    /*
+    |--------------------------------------------------------------------------
+    | Application Event
+    |--------------------------------------------------------------------------
+    |
+    | this variable determines the current event for all App
+    | this is because we only use an active event for all our queries    
+    |
+    */
+
+    'event' => 0,
 
     /*
     |--------------------------------------------------------------------------

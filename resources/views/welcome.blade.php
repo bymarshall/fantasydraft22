@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>MLB Fantasy Draft 2021</title>
+        <title>MLB Fantasy Draft 2022</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
@@ -25,7 +25,7 @@
             <div class="content">
                 <img src="{{ asset('storage/img/mlb.png') }}" width="50%" height="50%"/>
                 <div ><h1>Bienvenidos</h1></div>
-                <div class="title m-b-md"> MLB Fantasy Draft 2021</div>
+                <div class="title m-b-md"> MLB Fantasy Draft 2022</div>
 
                 <div class="links">
                     @if (Route::has('login'))
