@@ -38,8 +38,13 @@ function deleteAuction(idAuction){
                 },
                 dataType: "json",
                 success: function (data) {
-                    alert("La subasta #" + idAuction + " ha sido borrada!");
                     console.log(data);
+                    $.each(data, function() {
+                        var key = Object.keys(this)[32];
+                        var value = this[key];
+                        console.log("La subasta #" + value + " ha sido borrada!");
+                        alert("La subasta #" + value + " ha sido borrada!");                                            
+                    });                    
                     location.reload(true);
                 }
             });
@@ -48,25 +53,27 @@ function deleteAuction(idAuction){
 };
 
 //Eliminar una favorito
-function deleteFavs(idFav){
+function deleteFavs(idFav, namePlayerFav){
     if (typeof idFav !== 'undefined') {
-        $.ajax({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            url: config.routes.deletefavs,
-            method: "POST",
-            data: {
-                'idFav': idFav,
-                'idTeamsEvents' : $("#idTeamsEventFavs").val(),
-                'idEvent': $("#idEventFavs").val()                                
-            },
-            dataType: "json",
-            success: function (data) {
-                alert("Se ha borrado #" + idFav + " de favoritos!");
-                location.reload(true);
-            }
-        });
+        if(confirm("Realmente desea eliminar al jugador "+namePlayerFav+"?")){
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: config.routes.deletefavs,
+                method: "POST",
+                data: {
+                    'idFav': idFav,
+                    'idTeamsEvents' : $("#idTeamsEventFavs").val()                          
+                },
+                dataType: "json",
+                success: function (data) {
+                    console.log(data)
+                    alert(data);
+                    location.reload(true);
+                }
+            });
+        }
     }
 };        
 
@@ -75,6 +82,8 @@ $(document).ready(function(){
     deleteAuction();
     deleteFavs();
     $(".dropdown-toggle").dropdown();
+    // $('#auction_form')[0].reset();
+    // $('#form_output').html('');    
     //$( "#auctionModal" ).dialog({autoOpen: false, closeOnEscape: false});
     //$( ".selector" ).dialog({ closeOnEscape: false });
     //Escucha de Canales y acciones
@@ -96,6 +105,8 @@ $(document).ready(function(){
     
     function cleanAuction()
     {
+        $('#action').prop("disabled", true);
+        $('#cancelarSubasta').prop("disabled", true);
         $("#favPlayer").html("");
         $("#enSubasta").html("");
         $("#imgPlayerAuction").attr('src',"");
@@ -130,14 +141,14 @@ $(document).ready(function(){
         $("#favPlayer").html("");
         $("#enSubasta").html("");
         $("#divCurrentAuction").show();
+        console.log(data.message[0]);
         var currentAuctionPlayer = Object.values(data.message[0]);
         //console.log("Auction: "+$("#idTeamFavs").val()[0]);
         $("#enSubasta").html('<div class="alert alert-success">En Subasta: '+currentAuctionPlayer[33]+'</div>');
 
         $("#idTeamFavs > option").each(function() {
             if (this.value == currentAuctionPlayer[0])
-                $("#favPlayer").html('<div class="alert alert-danger">Este Jugador esta en tus Favoritos</div>');
-
+                $("#favPlayer").html('<div class="alert alert-danger blinker">Este Jugador esta en tus Favoritos</div>');
         });
 
         //Imagen del Jusgador
@@ -176,26 +187,28 @@ $(document).ready(function(){
      });
 
     channel6.bind('auction-delete', function(data) {
-         //Event recd : {"event":"auction-delete","data":{"message":"{'estado':'eliminada'}"},"channel":"deleteBidChannel"}
         alert(data.message);
         location.reload(true);
     });
+
     var $dropdown = $("#txt_valor_puja");
     for(var i=1;i<=191;i++){
         $dropdown.append(new Option(i, i));
     }
 
     //Muestra el Dialog
-    $('#add_auction').on('click', function(){
-        $('#auctionModal').modal('show');
-        $('#auction_form')[0].reset();
-        $('#form_output').html('');
-    });
+    // $('#add_auction').on('click', function(){
+    //     $('#auctionModal').modal('show');
+    //     $('#auction_form')[0].reset();
+    //     $('#form_output').html('');
+    // });
 
     //Inicia Subasta Manual
     $('#iniciaSubasta').on('click', function(){
        if($("#txt_player").val().trim() != ""){ 
-        $('#action').removeAttr('disabled');
+
+        //$('#iniciaSubasta').prop("disabled", true);
+        $('#action').removeAttr('disabled');                
         $('#cancelarSubasta').removeAttr('disabled');
             $.ajax({
                 headers: {
@@ -205,9 +218,11 @@ $(document).ready(function(){
                 method:"POST",
                 data:{
                     'idPlayer': $("#playerIDapi").val(),
+                    'namePlayer': $("#txt_player").val()
                 },
                 dataType:"json",
                 success:function(data){
+                    console.log(data);
                     $.each(data, function() {
                         var key = Object.keys(this)[32];
                         var value = this[key];
@@ -231,6 +246,7 @@ $(document).ready(function(){
     $('#cancelarSubasta').on('click', function()
     {
         if($("#txt_player").val().trim() != ""){ 
+           $('#iniciaSubasta').removeAttr('disabled'); 
            $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -265,8 +281,10 @@ $(document).ready(function(){
                     'idEvent': $("#idEventFavs").val()
                 },
                 dataType:"json",
-                success:function(data){
-                    console.log('Jugador agregado a favs:'+$("#playerIDapi_favs").val().trim());
+                success:function(data)
+                {
+                    alert(data+" "+$("#txt_player_favs").val().trim());
+                    console.log(data+" "+$("#txt_player_favs").val().trim());
                     window.location.reload(true);
                 }
             });                     
@@ -415,7 +433,7 @@ $(document).ready(function(){
         $('#form_output').html("");
     });
 
-    //Inicia subasta
+    //Guarda la subasta
     $('#auction_form').on('submit', function(event){
         event.preventDefault();
         $("#favPlayer").html("");

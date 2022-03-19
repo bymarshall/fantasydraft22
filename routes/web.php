@@ -41,11 +41,12 @@ Route::get('/settings', 'AuctionSettingsController@index')->name('settings');
 Route::post('settings/addplayertofavs','AuctionSettingsController@addPlayerToFavs')->name('settings.addplayertofavs');
 
 Route::post('settings/deletefavs','AuctionSettingsController@deleteFavs')->name('settings.deletefavs');
-/*
-Route::get('/events', function () {
-    return view('events');
+
+Route::get('error', function () {
+    abort(500);
 });
 
+/*
 Route::get('home/generatepwd',function($secret){
     //$password = Hash::make('secret');
     $password = Hash::make($secret);

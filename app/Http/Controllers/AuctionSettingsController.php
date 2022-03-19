@@ -30,6 +30,8 @@ class AuctionSettingsController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $id_event = \DB::table('tbl_event')->select('id_event')->where('status_int', 1)->get();
+        config(['app.event' => $id_event[0]->id_event]);        
     }
 
     /**
@@ -60,7 +62,7 @@ class AuctionSettingsController extends Controller
             'tbl_players_api.PhotoUrl','tbl_players_api.last_year_points','tbl_players_api.ranking', 'tbl_players_api.YahooPrice')
             ->distinct()
             ->where('tbl_teams_event.status_int', 1)->where('tbl_event.status_int', 1)->where('tbl_teams.id_user', $id_user)
-            ->where('tbl_players_api.id_event', $data_team[0]->id_event)
+            ->where('tbl_players_api.id_event', config('app.event'))
             ->get();
 
         // user role
@@ -69,7 +71,8 @@ class AuctionSettingsController extends Controller
         {
             abort(404);
         }
-        return view('settings', ['id_user'=> $id_user, 'user_role' => $user_role,'data_team' => $data_team,'data_favs' => $data_favs_players]);
+        return view('settings', ['id_user'=> $id_user, 'user_role' => $user_role,'data_team' => $data_team,
+                    'data_favs' => $data_favs_players]);
     }
 
     //Agrega Jugador a Favoritos
@@ -77,14 +80,26 @@ class AuctionSettingsController extends Controller
     {
         $idPlayer = trim($request->get('idPlayer'));
         $idTeamsEvent = trim($request->get('idTeamsEvents'));
-        $idEvent = trim($request->get('idEvent'));
+        //Vemos si ya no esta agregado
+        $playerToAdd = \DB::table('tbl_teams_event_favs_player')
+                    ->select('PlayerID')
+                    ->where('PlayerID', $idPlayer)
+                    ->where('id_teams_event', $idTeamsEvent)
+                    ->where('id_event', config('app.event'))
+                    ->first();
 
-        \DB::table('tbl_teams_event_favs_player')
-        ->insert(['id_teams_event'=> $idTeamsEvent, 'PlayerID' => $idPlayer, 'id_event' => $idEvent]);
-
-        $response = "Success";
-    
-        echo json_encode($response);
+        if(! $playerToAdd)
+        {
+            \DB::table('tbl_teams_event_favs_player')
+            ->insert(['id_teams_event'=> $idTeamsEvent, 'PlayerID' => $idPlayer, 'id_event' => config('app.event')]);
+            $output = 'Se ha agregado el jugador a Favoritos Exitosamente';
+        }
+        else
+        {
+            $output = 'El jugador ya existe en Favoritos!';
+        }
+        
+        echo json_encode($output);
     }
 
     //Elimina Jugador de Favoritos
@@ -92,16 +107,15 @@ class AuctionSettingsController extends Controller
     {
         $idFav = trim($request->get('idFav'));
         $idTeamsEvent = trim($request->get('idTeamsEvents'));
-        $idEvent = trim($request->get('idEvent'));
 
         \DB::table('tbl_teams_event_favs_player')
         ->where('PlayerID', $idFav)
         ->where('id_teams_event', $idTeamsEvent)
-        ->where('id_event', $idEvent)
+        ->where('id_event', config('app.event'))
         ->delete();
 
-        $response = "Success";
+        $output = 'Se ha eliminando el jugador de favoritos exitosamente!';
     
-        echo json_encode($response);
+        echo json_encode($output);
     }    
 }

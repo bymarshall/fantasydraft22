@@ -47,8 +47,7 @@
                                             <div class="panel-heading">
                                                 <label>Buscar Jugador <i class="fa fa-search" aria-hidden="true"></i>:</label>
                                                 <input type="text" placeholder="Nombre del Jugador" id="txt_player_search_favs" name="txt_player_search_favs"  style="width: 250px;"/>
-                                                <input type="hidden" id="idTeamsEventFavs" name="idTeamsEventFavs" value="{{ $data_team[0]->id_teams_event }}" />
-                                                <input type="hidden" id="idEventFavs" name="idEventFavs" value="{{ $data_team[0]->id_event}}" />
+                                                <input type="hidden" id="idTeamsEventFavs" name="idTeamsEventFavs" value="{{ $data_team[0]->id_teams_event }}" />                                                
                                             </div>
                                             <div class="panel-body">
                                             <select class="custom-select" id="search_result_favs" multiple style="height:320px;">
@@ -181,10 +180,13 @@
                                                     $row1 ="";
                                                     foreach($data_favs as $fav){
                                                         $row1 .= "<tr><td style='text-align:left;'>";
-                                                        $row1 .= "<img style='height:50px; weigth:50px;' src='";
-                                                        $row1 .= $fav->PhotoUrl;
-                                                        $row1 .= "'/><td>Jugador: ".$fav->FirstName." ".$fav->LastName." </td><td>Puntos: ".$fav->last_year_points;
-                                                        $row1 .="</td><td> Precio: ".$fav->YahooPrice."</td><td> Ranking: ".$fav->ranking."</td><td><input class='btn btn-outline-danger' type='button' onCLick='deleteFavs(".$fav->PlayerID.")' value='Eliminar' /></td></tr>";
+                                                        $row1 .= "<img style='height:50px; weigth:50px;' src='".$fav->PhotoUrl;
+                                                        $row1 .= "'/><td>Jugador: ".$fav->FirstName." ".$fav->LastName;
+                                                        $row1 .=" </td><td>Puntos: ".$fav->last_year_points;
+                                                        $row1 .="</td><td> Precio: ".$fav->YahooPrice."</td><td> Ranking: ".$fav->ranking;
+                                                        $row1 .="</td><td><input class='btn btn-outline-danger' ";
+                                                        $row1 .="type='button' onCLick='deleteFavs(".$fav->PlayerID.",`".$fav->FirstName."-".$fav->LastName."`)' ";
+                                                        $row1 .="value='Eliminar' /></td></tr>";
                                                     }
                                                     echo $row1;
                                                 ?>
