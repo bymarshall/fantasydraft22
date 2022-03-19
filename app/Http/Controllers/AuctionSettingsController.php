@@ -15,6 +15,7 @@ use Pusher\Laravel\Facades\Pusher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use App\Auction;
 use App\Player;
 use App\PlayerEvent;
@@ -69,6 +70,7 @@ class AuctionSettingsController extends Controller
         $user_role = \DB::table('tbl_user_role')->where('id_user', $id_user)->where('status_int', 1)->get();
         if(!$user_role)
         {
+            Log::channel('stderr')->info("INDEX EL USUARIO ".$id_user." NO TIENE ROL DEFINIDO");
             abort(404);
         }
         return view('settings', ['id_user'=> $id_user, 'user_role' => $user_role,'data_team' => $data_team,

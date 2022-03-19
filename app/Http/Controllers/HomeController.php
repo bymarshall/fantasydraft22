@@ -103,7 +103,6 @@ class HomeController extends Controller
         $id_user = Auth::user()->id;
         $teams = $this->getFormedTeamsPerTeam("",0);       
         $team_bids_finished = null;
-        //Log::channel('stderr')->info("INDEX Evento:".config('app.event'));
 
         $data_team = \DB::table('tbl_teams')
             ->leftJoin('tbl_teams_event', 'tbl_teams.id_team', '=', 'tbl_teams_event.id_team')
@@ -387,7 +386,7 @@ class HomeController extends Controller
                                 .$request->get('idTeam')." AND id_event = ".config('app.event'));
 
         if(((int)$qry_validate_pos[0]->gastado + (int)$request->get('final_prize_int')) > 200 ){
-            Log::channel('stderr')->info("GAURDA: EL USUARIO ".$$request->get('idTeam')." HIZO OFERTA SIN PRESUPUESTO");
+            Log::channel('stderr')->info("GUARDA: EL USUARIO ".$request->get('idTeam')." HIZO OFERTA SIN PRESUPUESTO");
             $error_output = "La OFERTA de este equipo SUPERA su TOTAL de Presupuesto";
             $error_flag = true;
         }
