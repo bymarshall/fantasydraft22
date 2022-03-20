@@ -5,20 +5,29 @@
     <!-- Content Wrapper. Contains page content  class="m-0 text-dark" -->
     <div class="content-wrapper">
 <!-- Content Header (Page header)[0]->id_rol  col-md-offset-1 -->
+<!-- Primero sacamos el gastado y las posiciones ocupadas -->
+<?php
+    $gastado = 0;
+    $posiciones = array();
+    foreach($team_bids_finished as $data)
+    {
+        $gastado += $data->PrecioFinal;
+        array_push($posiciones, $data->posPlayer);
+    }
+
+    $posiciones_fijas = array_diff(array("C","CI","MI","UTY","OF1","OF2","P1","P2","RP","BN"), $posiciones);
+?>
 <div class="container">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-7">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>EQUIPO FANTASY</th>
-                            <th>ACCIÓN</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        TU EQUIPO FANTASY
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
                                 <img style="height:100px; weigth:100px;" src="{{ $team_data->avatar_txt }}"/>
                                 <span id="nameFantasyTeam" style="font-size:26px;font-weigth:bolder">{{ trim($team_data->name_txt) }} </span>
                                 <select style="visibility:hidden;display:none" id="idTeamFavs" name="idTeamFavs">
@@ -28,45 +37,96 @@
                                         }
                                     ?>
                                 </select>
-                                {{-- Rol: { { trim( $ user_role[0] -> id_rol) } } --}}
-                            </td>
-                            <td>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="col-md-6"><span class="teaminfo">SALDO:</span>
+                                        <span class="teaminfo"> ${{ (int)200-(int)$gastado }}</span>
+                                    </div>
+                                    <div class="col-md-6"><span class="teaminfo">GASTADO:</span>
+                                        <span class="teaminfo"> ${{ $gastado }}</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 noTomado">POSICIONES PENDIENTES</div>
+                                </div>
                                 <?php
-                                if($user_role[0]->id_rol == '1') {
+                                    $index = 0;
+                                    $row1 = "<div class='row'>";
+                                    $row2 = "<div class='row'>";
+
+                                    foreach($posiciones_fijas as $item2)
+                                    {
+                                        if($index < 5)
+                                        {
+                                            $row1 .="<div class='col-md-2'><span class='noTomado'>".$item2."</span></div>";
+                                        }else
+                                        {
+                                            $row2 .="<div class='col-md-2'><span class='noTomado'>".$item2."</span></div>";
+                                        }
+                                        $index++;
+                                    }
+
+                                    foreach($posiciones as $item)
+                                    {
+                                        if($index < 5)
+                                        {
+                                            $row1 .="<div class='col-md-2'><span class='tomado'>".$item."</span></div>";
+                                        }else
+                                        {
+                                            $row2 .="<div class='col-md-2'><span class='tomado'>".$item."</span></div>";
+                                        }
+                                        $index++;
+                                    }
+
+                                    $row1 .= "</div>";
+                                    $row2 .= "</div>";
+
+                                    echo $row1.$row2;
                                 ?>
-                                    <input type="button" id="add_auction" class="btn btn-default" value="Crear Subasta" />
-                                <?php
-                                  }
-                                ?>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div><!-- /.col -->
-            <div class="col-md-5">
-                <?php
-                if($user_role[0]->id_rol == '1') {
-                ?>
-                <input type="button" id="toggleUsrPwd" value="Cambiar password a usuario">
-                <div id="mostrarToggle" style="display: none">
-                <table>
-                    <tr>
-                        <td>
-                            <input type="text" style="width:250px;" id="email_pwd" placeholder="coloque el email del usuario" /><br />
-                            <input type="text" style="width:250px;" id="data_pwd" placeholder="coloque el nuevo password del usuario" /><br />
-                            <input type="button" class="btn btn-primary" id="cambiaPwd" class="btn btn-default" value="Cambiar password" />
-                        </td>
-                    </tr>
-                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <?php
-                }
-                ?>
+            </div><!-- /.col -->
+        </div>
+    </div>
+</div>
+<?php
+if($user_role[0]->id_rol == '1') {
+?>
+<div class="container">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        ACCIONES
+                    </div>
+                    <div class="card-body">
+                        <input type="button" id="toggleUsrPwd" value="Cambiar password a usuario">
+                        <div id="mostrarToggle" style="display: none">
+                        <table>
+                            <tr>
+                                <td>
+                                    <input type="text" style="width:250px;" id="email_pwd" placeholder="coloque el email del usuario" /><br />
+                                    <input type="text" style="width:250px;" id="data_pwd" placeholder="coloque el nuevo password del usuario" /><br />
+                                    <input type="button" class="btn btn-primary" id="cambiaPwd" class="btn btn-default" value="Cambiar password" />
+                                </td>
+                            </tr>
+                        </table>
+                        </div>
+
+                    </div>
+                </div>
             </div>
                 <!--</div>  DIV ROW -->
         </div>
     </div>
 </div>
+<?php
+}
+?>
 <div class="container">
     <div class="container-fluid">
         <?php
@@ -155,10 +215,12 @@
                                                             <option value="CI">CI</option>
                                                             <option value="MI">MI</option>
                                                             <option value="UTY">UTY</option>
-                                                            <option value="BN">BN</option>
-                                                            <option value="OF">OF</option>
-                                                            <option value="P">P</option>
+                                                            <option value="OF1">OF1</option>
+                                                            <option value="OF2">OF2</option>
+                                                            <option value="P1">P1</option>
+                                                            <option value="P2">P2</option>
                                                             <option value="RP">RP</option>
+                                                            <option value="BN">BN</option>
                                                         </select>
                                                     </div><!-- FORM GROUP-->
                                                 </td>
@@ -223,6 +285,42 @@
         <?php
             }
         ?>
+        <!-- THIRD ROW -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        Así va tu Equipo: <b>{{ $team_data->name_txt}}</b> <img style="height:33px; weigth:33px;" src="{{ $team_data->avatar_txt }}" />
+                    </div>
+                    <div class="card-body">
+                        <?php
+                            $index = 0;
+                            $row1 ="<div class='row'>";
+                            $row2 ="<div class='row'>";
+                            foreach($team_bids_finished as $data1){
+                                if($index < 6){
+                                    $row1 .= "<div class='col-md-2'><div class='card' align='center'><table><tr><td style='text-align:center;'>";
+                                    $row1 .= "<img style='height:75px; weigth:75px;' src='";
+                                    $row1 .= $data1->pl_avatar;
+                                    $row1 .= "'/><BR /> ".$data1->Jugador."<BR /> Posición: ".$data1->posPlayer;
+                                    $row1 .="<BR /> Precio: ".$data1->PrecioFinal."</td></tr></table></div></div>";
+                                }else{
+                                    $row2 .= "<div class='col-md-2'><div class='card' align='center'><table><tr><td style='text-align:center;'>";
+                                    $row2 .= "<img style='height:75px; weigth:75px;' src='";
+                                    $row2 .= $data1->pl_avatar."'/><BR /> ".$data1->Jugador."<BR /> Posición: ".$data1->posPlayer;
+                                    $row2 .="<BR /> Precio: ".$data1->PrecioFinal."</td></tr></table></div></div>";
+                                }
+                                $index++;
+                            }
+                            $row1 .="</div>";
+                            $row2 .="</div>";
+                            echo $row1.$row2;
+                        ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END THIRD ROW -->
         <!-- SECOND ROW -->
         <div class="row" id="divCurrentAuction" style="display:none;">
             <div class="col-md-12">
@@ -366,43 +464,7 @@
                 </div>
             </div>
         </div>
-        <!-- END SECOND ROW -->
-        <!-- THIRD ROW -->
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        Así va tu Equipo: <b>{{ $team_data->name_txt}}</b> <img style="height:33px; weigth:33px;" src="{{ $team_data->avatar_txt }}" />
-                    </div>
-                    <div class="card-body">
-                        <?php
-                            $index = 0;
-                            $row1 ="<div class='row'>";
-                            $row2 ="<div class='row'>";
-                            foreach($team_bids_finished as $data1){
-                                if($index < 6){
-                                    $row1 .= "<div class='col-md-2'><div class='card' align='center'><table><tr><td style='text-align:center;'>";
-                                    $row1 .= "<img style='height:75px; weigth:75px;' src='";
-                                    $row1 .= $data1->pl_avatar;
-                                    $row1 .= "'/><BR /> ".$data1->Jugador."<BR /> Posición: ".$data1->posPlayer;
-                                    $row1 .="<BR /> Precio: ".$data1->PrecioFinal."</td></tr></table></div></div>";
-                                }else{
-                                    $row2 .= "<div class='col-md-2'><div class='card' align='center'><table><tr><td style='text-align:center;'>";
-                                    $row2 .= "<img style='height:75px; weigth:75px;' src='";
-                                    $row2 .= $data1->pl_avatar."'/><BR /> ".$data1->Jugador."<BR /> Posición: ".$data1->posPlayer;
-                                    $row2 .="<BR /> Precio: ".$data1->PrecioFinal."</td></tr></table></div></div>";
-                                }
-                                $index++;
-                            }
-                            $row1 .="</div>";
-                            $row2 .="</div>";
-                            echo $row1.$row2;
-                        ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- END THIRD ROW -->
+        <!-- END SECOND ROW -->        
         <!-- FOURTH ROW -->
         <div class="row">
             <div class="col-md-12">
