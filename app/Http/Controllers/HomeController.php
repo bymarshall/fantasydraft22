@@ -103,6 +103,7 @@ class HomeController extends Controller
         $id_user = Auth::user()->id;
         $teams = $this->getFormedTeamsPerTeam("",0);       
         $team_bids_finished = null;
+        $gastado = 0;
 
         $data_team = \DB::table('tbl_teams')
             ->leftJoin('tbl_teams_event', 'tbl_teams.id_team', '=', 'tbl_teams_event.id_team')
@@ -121,7 +122,12 @@ class HomeController extends Controller
         {
             $team_bids_finished = $this->getFormedTeamsPerTeam((string)$data_team[0]->id_teams_event, 1);
         }
-        
+
+        //gastado
+        // foreach($team_bids_finished as $item){
+        //     $gastado += $item->PrecioFinal;
+        // }
+
         $all_teams = \DB::table('tbl_teams')
             ->leftJoin('tbl_teams_event', 'tbl_teams.id_team', '=', 'tbl_teams_event.id_team')
             ->leftJoin('tbl_event', 'tbl_teams_event.id_event', '=', 'tbl_event.id_event')

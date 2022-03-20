@@ -173,7 +173,7 @@ $(document).ready(function(){
             $("#pitHld").text(currentAuctionPlayer[23]);
             $("#pitQs").text(currentAuctionPlayer[24]);
             $("#pitBsv").text(currentAuctionPlayer[25]);
-            $("#playerRosteredPit").text(currentAuctionPlayer[18]+"%");
+            $("#playerRosteredPit").text(currentAuctionPlayer[18]);
         }else{
             $("#trPitchers").hide();
             $("#trBatters").show();
@@ -182,7 +182,7 @@ $(document).ready(function(){
             $("#batCe").text(currentAuctionPlayer[28]);
             $("#batSb").text(currentAuctionPlayer[29]);
             $("#batK").text(currentAuctionPlayer[30]);
-            $("#playerRosteredBat").text(currentAuctionPlayer[18]+"%");
+            $("#playerRosteredBat").text(currentAuctionPlayer[18]);
         }
      });
 

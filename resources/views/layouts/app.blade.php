@@ -21,6 +21,7 @@
     <link href="{{ asset('css/playerDetail.css') }}" rel="stylesheet">
     <link href="{{ asset('css/blinker.css') }}" rel="stylesheet">
     <link href="{{ asset('font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/homeCustom.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -73,7 +74,7 @@
           <!-- Main Footer -->
         <footer class="main-footer">
             <div class="row">
-                <div class="col-md-8 off-set-4">
+                <div class="col-md-6">
                     <strong>Copyright &copy; 2022 <a href="mailto:carlosamaya1@gmail.com">Carlos Amaya</a>.</strong>
                 </div>
             </div>

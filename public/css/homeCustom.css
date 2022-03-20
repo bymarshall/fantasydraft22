@@ -52,3 +52,21 @@ html, body {
 .modal-dialog {
     max-width: 900px !important;
 }
+
+.teaminfo{
+    font-size: 32px;
+    font-weight: bold;
+    color: rgba(17, 13, 8, 0.589);
+}
+
+.tomado{
+    font-size: 24px;
+    font-weight: bold;
+    color: rgba(17, 13, 8, 0.589);
+}
+
+.noTomado{
+    font-size: 24px;
+    font-weight: bold;
+    color: rgba(221, 28, 28, 0.589);
+}
