@@ -70,9 +70,30 @@
                         </div>
                     </div>
                 </div>
-            </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                TU EQUIPO EN ESE EVENTO
+                            </div>
+                            <div class="card-body" id="equipoEvents">
+                            </div>
+                        </div>
+                    </div>                
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                TODOS LOS EQUIPOS DE ESE EVENTO
+                            </div>
+                            <div class="card-body" id="allEquiposEvent">
+                            </div>
+                        </div>
+                    </div>                
+                </div>
         </div>
-        <div class="container">
+        {{-- <div class="container">
             <div class="container-fluid">
                 <!-- FIRST ROW -->
                 <div class="row">
@@ -82,14 +103,13 @@
                                 TU EQUIPO EN ESE EVENTO
                             </div>
                             <div class="card-body" id="equipoEvent">
-                                 {{-- <table id="equipoEvent" style="width: 700px;"></table> --}}
                             </div>
                         </div>
                     </div>
                 </div>
                 <!-- END FIRST ROW -->
             </div>
-        </div>
+        </div> --}}
     </div>
 </div>
 @endsection

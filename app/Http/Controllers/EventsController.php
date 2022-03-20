@@ -84,7 +84,8 @@ class EventsController extends Controller
 
         Log::channel('stderr')->info("BUSCA EVENTO: ".json_encode($eventinfo));
         Log::channel('stderr')->info("BUSCA EVENTO: ".json_encode($id_team_event));
-
+        
+        //Detalles del equipo en el evento seleccionado
         $query_teams_event ='SELECT auct.id_auction idBid, pl.name_txt Jugador, auct.final_prize_int PrecioFinal,';
         $query_teams_event .='tm.name_txt FantasyTeam, auct.position_txt posPlayer, pe.photo_txt pl_avatar, ';
         $query_teams_event .='te.budget budget, tm.avatar_txt team_avatar, pe.mlb_team_txt MLB, ';
@@ -101,6 +102,22 @@ class EventsController extends Controller
 
         Log::channel('stderr')->info("EVENTS BUSCA TEAM EVENTO: ".json_encode($your_team));   
         array_push($responses, $your_team);
+
+        //Detalles del equipo en el evento seleccionado
+        $query_event ='SELECT auct.id_auction idBid, pl.name_txt Jugador, auct.final_prize_int PrecioFinal,';
+        $query_event .='tm.name_txt FantasyTeam, auct.position_txt posPlayer, pe.photo_txt pl_avatar, ';
+        $query_event .='te.budget budget, tm.avatar_txt team_avatar, pe.mlb_team_txt MLB, ';
+        $query_event .='pe.id_player_event IdPlayerEvent  FROM tbl_auction auct ';
+        $query_event .='LEFT JOIN tbl_player_event pe ON (auct.id_player_event = pe.id_player_event) ';
+        $query_event .='LEFT JOIN tbl_event evt ON (pe.id_event = evt.id_event) ';
+        $query_event .='LEFT JOIN tbl_player pl ON (pe.id_player = pl.id_player)';
+        $query_event .='LEFT JOIN tbl_teams_event te ON (auct.id_teams_event = te.id_teams_event) ';
+        $query_event .='LEFT JOIN tbl_teams tm ON (te.id_team = tm.id_team) ';
+        $query_event .='WHERE auct.winningbid = 1 AND auct.auct_status_int = 1 AND evt.id_event = '.$request->get('idEvent');
+        $query_event .=' AND auct.id_teams_event in (SELECT `id_teams_event` FROM `tbl_teams_event` WHERE `id_event` = '.$request->get('idEvent').') ';
+        $query_event .=' AND auct.id_event = '.$request->get('idEvent').' ORDER BY FantasyTeam, posPlayer';
+        $all_teams = \DB::select($query_event);
+        array_push($responses, $all_teams);
 
         echo json_encode($responses);    
     }
