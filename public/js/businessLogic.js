@@ -634,19 +634,16 @@ $(document).ready(function(){
         /* opciones:
             2B,3B,C,CF,DH,LF,OF,P,PH,PR,RF,RP,SP,SS
         */
-        switch(playersArray[$("option:selected",this).val()].Position){
+       var position_pl = playersArray[$("option:selected",this).val()].Position;
+        switch(position_pl){
             case "P": case "SP":  case "RP":
                     $("#sel_pos option[value=P1]").removeAttr('disabled');
                     $("#sel_pos option[value=P2]").removeAttr('disabled');
                     $("#sel_pos option[value=RP]").removeAttr('disabled');
-                    $("#sel_pos option[value=RP]").removeAttr('selected');
 
-                    $("#sel_pos option[value=C]").removeAttr('selected');
-                    $("#sel_pos option[value=CI]").removeAttr('selected');
-                    $("#sel_pos option[value=UTY]").removeAttr('selected');
-                    $("#sel_pos option[value=MI]").removeAttr('selected');
-                    $("#sel_pos option[value=OF1]").removeAttr('selected');
-                    $("#sel_pos option[value=OF2]").removeAttr('selected');
+                    $("#sel_pos option[value=P1]").removeAttr('selected');
+                    $("#sel_pos option[value=P2]").removeAttr('selected');
+                    $("#sel_pos option[value=RP]").removeAttr('selected');
 
                     $("#sel_pos option[value=C]").attr('disabled','disabled');
                     $("#sel_pos option[value=CI]").attr('disabled','disabled');
@@ -655,7 +652,14 @@ $(document).ready(function(){
                     $("#sel_pos option[value=OF1]").attr('disabled','disabled');
                     $("#sel_pos option[value=OF2]").attr('disabled','disabled');
 
-                    if(playersArray[$("option:selected",this).val()].Position == "RP")
+                    $("#sel_pos option[value=C]").removeAttr('selected');
+                    $("#sel_pos option[value=CI]").removeAttr('selected');
+                    $("#sel_pos option[value=UTY]").removeAttr('selected');
+                    $("#sel_pos option[value=MI]").removeAttr('selected');
+                    $("#sel_pos option[value=OF1]").removeAttr('selected');
+                    $("#sel_pos option[value=OF2]").removeAttr('selected');
+
+                    if(position_pl == "RP")
                     {
                         $("#sel_pos option[value=RP]").attr('selected','selected');
                     }else
@@ -679,15 +683,16 @@ $(document).ready(function(){
                     $("#sel_pos option[value=OF1]").removeAttr('selected');
                     $("#sel_pos option[value=OF2]").removeAttr('selected');
 
+                    $("#sel_pos option[value=P1]").attr('disabled','disabled');
+                    $("#sel_pos option[value=P2]").attr('disabled','disabled');
+                    $("#sel_pos option[value=RP]").attr('disabled','disabled');
+
                     $("#sel_pos option[value=RP]").removeAttr('selected');
                     $("#sel_pos option[value=P1]").removeAttr('selected');
                     $("#sel_pos option[value=P2]").removeAttr('selected');
 
-                    $("#sel_pos option[value=P1]").attr('disabled','disabled');
-                    $("#sel_pos option[value=P2]").attr('disabled','disabled');
-                    $("#sel_pos option[value=RP]").attr('disabled','disabled');
                     //2B*,3B*,C*,CF*,DH*,LF*,OF*,P*,PH*,PR*,RF*,RP*,SP*,SS*
-                    switch(playersArray[$("option:selected",this).val()].Position){
+                    switch(position_pl){
                         case "2B": case "SS": 
                             $("#sel_pos option[value=MI]").attr('selected','selected');
                             break;
