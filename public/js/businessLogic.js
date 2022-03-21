@@ -1,7 +1,7 @@
 var playersArray = new Array();
 var playersArrayFavs = new Array();
 var idPlayerEvent = "";
-const positionsArr = ["C","CI","MI","UTY","OF","P","RP","BN"];
+const positionsArr = ["C","CI","MI","UTY","OF1","OF2","P1","P2","RP","BN"];
 var montoBase = 0;
 var totalGastado = 0;
 // Enable pusher logging - don't include this in production
@@ -636,39 +636,74 @@ $(document).ready(function(){
         */
         switch(playersArray[$("option:selected",this).val()].Position){
             case "P": case "SP":  case "RP":
-                    $("#sel_pos option[value=P]").removeAttr('disabled');
-                    $("#sel_pos option[value=P]").attr('selected','selected');
+                    $("#sel_pos option[value=P1]").removeAttr('disabled');
+                    $("#sel_pos option[value=P2]").removeAttr('disabled');
                     $("#sel_pos option[value=RP]").removeAttr('disabled');
                     $("#sel_pos option[value=RP]").removeAttr('selected');
-
-                    $("#sel_pos option[value=C]").attr('disabled','disabled');
-                    $("#sel_pos option[value=CI]").attr('disabled','disabled');
-                    $("#sel_pos option[value=UTY]").attr('disabled','disabled');
-                    $("#sel_pos option[value=MI]").attr('disabled','disabled');
-                    $("#sel_pos option[value=OF]").attr('disabled','disabled');
 
                     $("#sel_pos option[value=C]").removeAttr('selected');
                     $("#sel_pos option[value=CI]").removeAttr('selected');
                     $("#sel_pos option[value=UTY]").removeAttr('selected');
                     $("#sel_pos option[value=MI]").removeAttr('selected');
-                    $("#sel_pos option[value=OF]").removeAttr('selected');
+                    $("#sel_pos option[value=OF1]").removeAttr('selected');
+                    $("#sel_pos option[value=OF2]").removeAttr('selected');
+
+                    $("#sel_pos option[value=C]").attr('disabled','disabled');
+                    $("#sel_pos option[value=CI]").attr('disabled','disabled');
+                    $("#sel_pos option[value=UTY]").attr('disabled','disabled');
+                    $("#sel_pos option[value=MI]").attr('disabled','disabled');
+                    $("#sel_pos option[value=OF1]").attr('disabled','disabled');
+                    $("#sel_pos option[value=OF2]").attr('disabled','disabled');
+
+                    if(playersArray[$("option:selected",this).val()].Position == "RP")
+                    {
+                        $("#sel_pos option[value=RP]").attr('selected','selected');
+                    }else
+                    {
+                        $("#sel_pos option[value=P1]").attr('selected','selected');
+                    }
+
                 break;
             default:
                     $("#sel_pos option[value=C]").removeAttr('disabled');
-                    $("#sel_pos option[value=C]").attr('selected','selected');
                     $("#sel_pos option[value=CI]").removeAttr('disabled');
                     $("#sel_pos option[value=UTY]").removeAttr('disabled');
                     $("#sel_pos option[value=MI]").removeAttr('disabled');
-                    $("#sel_pos option[value=OF]").removeAttr('disabled');
+                    $("#sel_pos option[value=OF1]").removeAttr('disabled');
+                    $("#sel_pos option[value=OF2]").removeAttr('disabled');
+
+                    $("#sel_pos option[value=C]").removeAttr('selected');
                     $("#sel_pos option[value=CI]").removeAttr('selected');
                     $("#sel_pos option[value=UTY]").removeAttr('selected');
                     $("#sel_pos option[value=MI]").removeAttr('selected');
-                    $("#sel_pos option[value=OF]").removeAttr('selected');
+                    $("#sel_pos option[value=OF1]").removeAttr('selected');
+                    $("#sel_pos option[value=OF2]").removeAttr('selected');
 
-                    $("#sel_pos option[value=P]").attr('disabled','disabled');
-                    $("#sel_pos option[value=RP]").attr('disabled','disabled');
                     $("#sel_pos option[value=RP]").removeAttr('selected');
-                    $("#sel_pos option[value=P]").removeAttr('selected');
+                    $("#sel_pos option[value=P1]").removeAttr('selected');
+                    $("#sel_pos option[value=P2]").removeAttr('selected');
+
+                    $("#sel_pos option[value=P1]").attr('disabled','disabled');
+                    $("#sel_pos option[value=P2]").attr('disabled','disabled');
+                    $("#sel_pos option[value=RP]").attr('disabled','disabled');
+                    //2B*,3B*,C*,CF*,DH*,LF*,OF*,P*,PH*,PR*,RF*,RP*,SP*,SS*
+                    switch(playersArray[$("option:selected",this).val()].Position){
+                        case "2B": case "SS": 
+                            $("#sel_pos option[value=MI]").attr('selected','selected');
+                            break;
+                        case "3B": case "1B": 
+                            $("#sel_pos option[value=CI]").attr('selected','selected');
+                            break;
+                        case "OF": case "CF": case "LF": case "RF": 
+                            $("#sel_pos option[value=OF1]").attr('selected','selected');
+                            break; 
+                        case "DH": case "PR": case "PH":
+                            $("#sel_pos option[value=UTY]").attr('selected','selected');
+                            break; 
+                        case "C":
+                            $("#sel_pos option[value=C]").attr('selected','selected');
+                            break;                                                        
+                    }
                 break;
         }
 
@@ -676,7 +711,7 @@ $(document).ready(function(){
             $("#txt_valor_puja option[value="+t+"]").attr('disabled','disabled');
         }
         //Set Value
-        console.log("BASE-YAHOO:"+valorYahoo);
+        //console.log("BASE-YAHOO:"+valorYahoo);
         $("#txt_valor_puja option[value="+(parseInt(valorYahoo))+"]").attr('selected','selected');
     });
 }); //END DOCUMENT READY
