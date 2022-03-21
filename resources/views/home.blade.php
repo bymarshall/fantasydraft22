@@ -7,6 +7,8 @@
 <!-- Content Header (Page header)[0]->id_rol  col-md-offset-1 -->
 <!-- Primero sacamos el gastado y las posiciones ocupadas -->
 <?php
+    $teams_base = array();
+    $teams_completed = array();
     $gastado = 0;
     $posiciones = array();
     foreach($team_bids_finished as $data)
@@ -16,6 +18,17 @@
     }
 
     $posiciones_fijas = array_diff(array("C","CI","MI","UTY","OF1","OF2","P1","P2","RP","BN"), $posiciones);
+
+    //sacamos los equipos completos
+    foreach ($all_teams as $value) {
+        array_push($teams_base, $value->id_teams_event);
+    }
+
+    foreach ($bidsByTeams as $value) {
+        array_push($teams_completed, $value->id_teams_event);
+    }
+    
+    $teams_pendientes = array_diff($teams_base, $teams_completed);
 ?>
 <div class="container">
     <div class="container-fluid">
@@ -92,43 +105,50 @@
         </div>
     </div>
 </div>
-<?php
-if($user_role[0]->id_rol == '1') {
-?>
 <div class="container">
     <div class="container-fluid">
+        <!-- THIRD ROW -->
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        ACCIONES
+                        Así va tu Equipo: <b>{{ $team_data->name_txt}}</b> <img style="height:33px; weigth:33px;" src="{{ $team_data->avatar_txt }}" />
                     </div>
                     <div class="card-body">
-                        <input type="button" id="toggleUsrPwd" value="Cambiar password a usuario">
-                        <div id="mostrarToggle" style="display: none">
-                        <table>
-                            <tr>
-                                <td>
-                                    <input type="text" style="width:250px;" id="email_pwd" placeholder="coloque el email del usuario" /><br />
-                                    <input type="text" style="width:250px;" id="data_pwd" placeholder="coloque el nuevo password del usuario" /><br />
-                                    <input type="button" class="btn btn-primary" id="cambiaPwd" class="btn btn-default" value="Cambiar password" />
-                                </td>
-                            </tr>
-                        </table>
-                        </div>
-
+                        <?php
+                            $index = 0;
+                            $row1 ="<div class='row'>";
+                            $row2 ="<div class='row'>";
+                            foreach($team_bids_finished as $data1){
+                                if($index < 6){
+                                    $row1 .= "<div class='col-md-2'><div class='card' align='center'><table><tr><td style='text-align:center;'>";
+                                    $row1 .= "<img style='height:75px; weigth:75px;' src='";
+                                    $row1 .= $data1->pl_avatar;
+                                    $row1 .= "'/><BR /> ".$data1->Jugador."<BR /> Posición: ".$data1->posPlayer;
+                                    $row1 .="<BR /> Precio: ".$data1->PrecioFinal."</td></tr></table></div></div>";
+                                }else{
+                                    $row2 .= "<div class='col-md-2'><div class='card' align='center'><table><tr><td style='text-align:center;'>";
+                                    $row2 .= "<img style='height:75px; weigth:75px;' src='";
+                                    $row2 .= $data1->pl_avatar."'/><BR /> ".$data1->Jugador."<BR /> Posición: ".$data1->posPlayer;
+                                    $row2 .="<BR /> Precio: ".$data1->PrecioFinal."</td></tr></table></div></div>";
+                                }
+                                $index++;
+                            }
+                            $row1 .="</div>";
+                            $row2 .="</div>";
+                            $completado = "<div class='row'><div class='col-md-12'><div class='alert alert-success'>Tu Equipo ya esta completo. Suerte!</div></div></div>";
+                            
+                            if($index > 8){
+                                echo $completado.$row1.$row2;
+                            }else{
+                                echo $row1.$row2;
+                            }
+                        ?>
                     </div>
                 </div>
             </div>
-                <!--</div>  DIV ROW -->
         </div>
-    </div>
-</div>
-<?php
-}
-?>
-<div class="container">
-    <div class="container-fluid">
+        <!-- END THIRD ROW -->
         <?php
         if($user_role[0]->id_rol == '1') {
         ?>
@@ -256,7 +276,11 @@ if($user_role[0]->id_rol == '1') {
                                                         <select id="sel_equipos" name="sel_equipos">
                                                             <?php
                                                             foreach($all_teams as $team){
-                                                                echo "<option value=".$team->id_teams_event.">".$team->name_txt."</option>";
+                                                                foreach ($teams_pendientes as $value) {
+                                                                    if( $value == $team->id_teams_event){
+                                                                        echo "<option value=".$team->id_teams_event.">".$team->name_txt."</option>";
+                                                                    }
+                                                                }
                                                             }
                                                             ?>
                                                         </select>
@@ -285,42 +309,6 @@ if($user_role[0]->id_rol == '1') {
         <?php
             }
         ?>
-        <!-- THIRD ROW -->
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        Así va tu Equipo: <b>{{ $team_data->name_txt}}</b> <img style="height:33px; weigth:33px;" src="{{ $team_data->avatar_txt }}" />
-                    </div>
-                    <div class="card-body">
-                        <?php
-                            $index = 0;
-                            $row1 ="<div class='row'>";
-                            $row2 ="<div class='row'>";
-                            foreach($team_bids_finished as $data1){
-                                if($index < 6){
-                                    $row1 .= "<div class='col-md-2'><div class='card' align='center'><table><tr><td style='text-align:center;'>";
-                                    $row1 .= "<img style='height:75px; weigth:75px;' src='";
-                                    $row1 .= $data1->pl_avatar;
-                                    $row1 .= "'/><BR /> ".$data1->Jugador."<BR /> Posición: ".$data1->posPlayer;
-                                    $row1 .="<BR /> Precio: ".$data1->PrecioFinal."</td></tr></table></div></div>";
-                                }else{
-                                    $row2 .= "<div class='col-md-2'><div class='card' align='center'><table><tr><td style='text-align:center;'>";
-                                    $row2 .= "<img style='height:75px; weigth:75px;' src='";
-                                    $row2 .= $data1->pl_avatar."'/><BR /> ".$data1->Jugador."<BR /> Posición: ".$data1->posPlayer;
-                                    $row2 .="<BR /> Precio: ".$data1->PrecioFinal."</td></tr></table></div></div>";
-                                }
-                                $index++;
-                            }
-                            $row1 .="</div>";
-                            $row2 .="</div>";
-                            echo $row1.$row2;
-                        ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- END THIRD ROW -->
         <!-- SECOND ROW -->
         <div class="row" id="divCurrentAuction" style="display:none;">
             <div class="col-md-12">
@@ -510,28 +498,77 @@ if($user_role[0]->id_rol == '1') {
                   <?php
                   $row = "";
                   foreach($table_teams as $data){
-                  $row .= "<tr><td><img style='height:80px; weigth:80px;' src='".$data->team_avatar."'><BR /><h5><b>".$data->team."</b></h5></td><td><h4><b>$ ".$data->budget."</b></h4></td>";
-                      $it = 0;
-                      $gastado = 0;
-                      $row .="<td><table class='table table-sm' style='background-color:transparent !important;'><tr>";
-                      foreach($data->players as $data2){
-                        $gastado += $data2['price'];
-                        $row .="<td style='text-align:center;'>";
-                        if($data2['avatar'] != "") $row .="<img style='height:40px; weigth:40px;' src='".$data2['avatar']."'/><br />";
-                        $row .="<b>".$data2['jugador']."</b><br /> POS:".$data2['position']."<br /> VALUE:";
-                        $row .=$data2['price']."<br />";
-                        if($user_role[0]->id_rol == '1') {
-                            if($data2['jugador'] != ""){
-                                $row .="<input class='btn btn-outline-danger' type='button' onCLick='deleteAuction(".$data2['idBid'].")' value='Eliminar' />";
+                      if($data->team == $team_data->name_txt){
+                            $row .= "<tr><td><img style='height:80px; weigth:80px;' src='".$data->team_avatar."'><BR /><h5><b>".$data->team."</b></h5></td><td><h4><b>$ ".$data->budget."</b></h4></td>";
+                            $it = 0;
+                            $gastado = 0;
+                            $completo = true;
+                            $row .="<td><table class='table table-sm' style='background-color:transparent !important;'><tr>";
+                            foreach($data->players as $item){
+                                if($item['position'] == "FREE"){
+                                    $completo = false;
+                                    break;
+                                }
                             }
+                            if($completo){
+                                $row .="<tr><td colspan='5'><div class='alert alert-success'>Tu equipo ya esta completo. Suerte!</div></td></tr><tr>";
+                            }
+                            foreach($data->players as $data2){
+                                $gastado += $data2['price'];
+                                $row .="<td style='text-align:center;'>";
+                                if($data2['avatar'] != "") $row .="<img style='height:40px; weigth:40px;' src='".$data2['avatar']."'/><br />";
+                                $row .="<b>".$data2['jugador']."</b><br /> POS:".$data2['position']."<br /> VALUE:";
+                                $row .=$data2['price']."<br />";
+                                if($user_role[0]->id_rol == '1') {
+                                    if($data2['jugador'] != ""){
+                                        $row .="<input class='btn btn-outline-danger' type='button' onCLick='deleteAuction(".$data2['idBid'].")' value='Eliminar' />";
+                                    }
+                                }
+                                $row .="</td>";
+                                if($it==4) $row .="</tr><tr>";
+                                $it++;
+                            }
+                            $row .="</tr></table></td>";
+                            $row .="<td><h4>Gastado: <b>$".$gastado."</b></h4><br /><h4>Disp: <b>$".((int)($data->budget)-(int)$gastado)."</b></h4></td></tr>";
+                            break;
                         }
-                        $row .="</td>";
-                        if($it==4) $row .="</tr><tr>";
-                        $it++;
-                      }
-                      $row .="</tr></table></td>";
-                      $row .="<td><h4>Gastado: <b>$".$gastado."</b></h4><br /><h4>Disp: <b>$".((int)($data->budget)-(int)$gastado)."</b></h4></td></tr>";
                   }
+
+                  foreach($table_teams as $data){
+                      if($data->team != $team_data->name_txt){
+                            $row .= "<tr><td><img style='height:80px; weigth:80px;' src='".$data->team_avatar."'><BR /><h5><b>".$data->team."</b></h5></td><td><h4><b>$ ".$data->budget."</b></h4></td>";
+                            $it = 0;
+                            $gastado = 0;
+                            $completo = true;
+                            $row .="<td><table class='table table-sm' style='background-color:transparent !important;'><tr>";
+                            foreach($data->players as $item){
+                                if($item['position'] == "FREE"){
+                                    $completo = false;
+                                    break;
+                                }
+                            }
+                            if($completo){
+                                $row .="<tr><td colspan='5'><div class='alert alert-success'>Este equipo ya esta completo!</div></td></tr><tr>";
+                            }
+                            foreach($data->players as $data2){
+                                $gastado += $data2['price'];
+                                $row .="<td style='text-align:center;'>";
+                                if($data2['avatar'] != "") $row .="<img style='height:40px; weigth:40px;' src='".$data2['avatar']."'/><br />";
+                                $row .="<b>".$data2['jugador']."</b><br /> POS:".$data2['position']."<br /> VALUE:";
+                                $row .=$data2['price']."<br />";
+                                if($user_role[0]->id_rol == '1') {
+                                    if($data2['jugador'] != ""){
+                                        $row .="<input class='btn btn-outline-danger' type='button' onCLick='deleteAuction(".$data2['idBid'].")' value='Eliminar' />";
+                                    }
+                                }
+                                $row .="</td>";
+                                if($it==4) $row .="</tr><tr>";
+                                $it++;
+                            }
+                            $row .="</tr></table></td>";
+                            $row .="<td><h4>Gastado: <b>$".$gastado."</b></h4><br /><h4>Disp: <b>$".((int)($data->budget)-(int)$gastado)."</b></h4></td></tr>";
+                        }
+                  }                  
                   echo $row;
                   ?>
                   </tbody>
