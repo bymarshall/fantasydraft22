@@ -67,6 +67,18 @@ class HomeController extends Controller
         return \DB::select($query_bids_finished);
     }
 
+    private function getBidsByTeam(){
+        $query_bids_byteams ='SELECT te.id_teams_event, tm.name_txt, count(auct.winningbid) as completados ';
+        $query_bids_byteams .='FROM tbl_auction auct ';
+        $query_bids_byteams .='LEFT JOIN tbl_teams_event te ON (auct.id_teams_event = te.id_teams_event) ';
+        $query_bids_byteams .='LEFT JOIN tbl_teams tm ON (te.id_team = tm.id_team) ';
+        $query_bids_byteams .='LEFT JOIN tbl_event evt ON (auct.id_event = evt.id_event) ';
+        $query_bids_byteams .='WHERE auct.winningbid = 1 AND auct.auct_status_int = 1 AND evt.status_int = 1 ';
+        $query_bids_byteams .='GROUP BY tm.name_txt,te.id_teams_event HAVING completados = 10;';
+
+        return \DB::select($query_bids_byteams);
+    }
+
     private function getFormedTeamsPerTeam($team, $isATeam){
         $completeQuery = "";
         switch((integer)$isATeam){
@@ -103,7 +115,6 @@ class HomeController extends Controller
         $id_user = Auth::user()->id;
         $teams = $this->getFormedTeamsPerTeam("",0);       
         $team_bids_finished = null;
-        $gastado = 0;
 
         $data_team = \DB::table('tbl_teams')
             ->leftJoin('tbl_teams_event', 'tbl_teams.id_team', '=', 'tbl_teams_event.id_team')
@@ -122,11 +133,6 @@ class HomeController extends Controller
         {
             $team_bids_finished = $this->getFormedTeamsPerTeam((string)$data_team[0]->id_teams_event, 1);
         }
-
-        //gastado
-        // foreach($team_bids_finished as $item){
-        //     $gastado += $item->PrecioFinal;
-        // }
 
         $all_teams = \DB::table('tbl_teams')
             ->leftJoin('tbl_teams_event', 'tbl_teams.id_team', '=', 'tbl_teams_event.id_team')
@@ -172,6 +178,9 @@ class HomeController extends Controller
         // Finished Bids
         $bids_finished = $this->getAllBids();
 
+        //bidsByTeam
+        $bidsByTeam = $this->getBidsByTeam();
+
         //tomamos los favoritos
         $team_favs = \DB::table('tbl_teams_event_favs_player')
             ->select('PlayerID')
@@ -186,7 +195,7 @@ class HomeController extends Controller
             abort(404);
         }
         return view('home', ['table_teams'=> $ftsyTeams, 'all_teams' => $all_teams, 'team_data' => $data_team[0], 
-                'user_role' => $user_role, 'bids_finished' => $bids_finished, 
+                'user_role' => $user_role, 'bids_finished' => $bids_finished, 'bidsByTeams' => $bidsByTeam,
                 'team_bids_finished' => $team_bids_finished, 'team_favs' => $team_favs]);
     }
 

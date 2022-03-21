@@ -33,6 +33,35 @@
         </div>
         <div class="container">
             <div class="container-fluid">
+        <?php
+        if($user_role[0]->id_rol == '1') {
+        ?>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        ACCIONES
+                    </div>
+                    <div class="card-body">
+                        <input type="button" id="toggleUsrPwd" value="Cambiar password a usuario">
+                        <div id="mostrarToggle" style="display: none">
+                        <table>
+                            <tr>
+                                <td>
+                                    <input type="text" style="width:250px;" id="email_pwd" placeholder="coloque el email del usuario" /><br />
+                                    <input type="text" style="width:250px;" id="data_pwd" placeholder="coloque el nuevo password del usuario" /><br />
+                                    <input type="button" class="btn btn-primary" id="cambiaPwd" class="btn btn-default" value="Cambiar password" />
+                                </td>
+                            </tr>
+                        </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php
+        }
+        ?>
                 <!-- FIRST ROW -->
                 <div class="row">
                     <div class="col-md-12">
