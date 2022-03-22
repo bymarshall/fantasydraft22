@@ -92,6 +92,7 @@
             routes: {
                 search: "{{ route('home.searchplayer') }}",
                 changepassword: "{{ route('home.generatepwd') }}",
+                updatepassword: "{{ route('home.updatepwd') }}",
                 updateprice: "{{ route('home.updatePlayerPrice') }}",
                 loadauction: "{{ route('home.loadauction') }}",
                 cancelauction: "{{ route('home.cancelauction') }}",

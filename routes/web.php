@@ -26,6 +26,8 @@ Route::post('home/loadauction', 'HomeController@loadauction')->name('home.loadau
 
 Route::post('home/generatepwd', 'HomeController@generatepwd')->name('home.generatepwd');
 
+Route::post('home/updatepwd', 'HomeController@updatepwd')->name('home.updatepwd');
+
 Route::post('home/updatePlayerPrice', 'HomeController@updatePlayerPrice')->name('home.updatePlayerPrice');
 
 Route::post('home/postdata','HomeController@postdata')->name('home.postdata');

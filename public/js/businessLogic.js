@@ -510,6 +510,7 @@ $(document).ready(function(){
             alert("Por Favor Seleccione un jugador o Coloque un precio correcto");
         }
     });
+
     //Cambiar PWS
     $("#cambiaPwd").on('click',function() {
         if ($("#email_pwd").val().trim() != "" && $("#data_pwd").val().trim() != "") {
@@ -538,6 +539,35 @@ $(document).ready(function(){
         else{
             alert("Error, asegúrese de que los campos email o password no estén vacíos!");
             $("#email_pwd").focus();
+        }
+    });
+
+    //Update PWS
+    $("#updatePwd").on('click',function() {
+        if ( $("#data_pwd").val().trim() != "" && $("#data_pwd").val().trim()==$("#data_pwd1").val().trim()) {
+            if (confirm("Está Seguro de Cambiar el password?")) {
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url: config.routes.updatepassword,
+                    method: "POST",
+                    data: {
+                        pwd: $("#data_pwd").val().trim()
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        alert(data);
+                        console.log(data);
+                        $("#data_pwd").val("");
+                    },
+
+                });
+            }
+        }
+        else{
+            alert("Error, asegúrese de que el campo password no esté vacío!");
+            $("#data_pwd").focus();
         }
     });
 
