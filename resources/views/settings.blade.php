@@ -60,7 +60,33 @@
             </div>
         </div>
         <?php
-        }
+        }else{
+        ?>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        ACCIONES
+                    </div>
+                    <div class="card-body">
+                        <input type="button" id="toggleUsrPwd" value="Actualizar password">
+                        <div id="mostrarToggle" style="display: none">
+                        <table>
+                            <tr>
+                                <td>
+                                    <input type="text" style="width:250px;" id="data_pwd" placeholder="coloque el nuevo password" /><br />
+                                    <input type="text" style="width:250px;" id="data_pwd1" placeholder="repita el nuevo password" /><br />
+                                    <input type="button" class="btn btn-primary" id="updatePwd" class="btn btn-default" value="Actualizar password" />
+                                </td>
+                            </tr>
+                        </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php 
+            }
         ?>
                 <!-- FIRST ROW -->
                 <div class="row">

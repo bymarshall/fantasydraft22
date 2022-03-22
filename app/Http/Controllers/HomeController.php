@@ -336,6 +336,24 @@ class HomeController extends Controller
         echo json_encode($response);
     }
 
+    //Update un pwd
+    function updatepwd(Request $request){
+        $pwd = trim($request->get('pwd'));
+        $email_valid = \DB::select("SELECT email FROM users WHERE id = ".Auth::user()->id);
+        if($email_valid[0]->email != ""){
+            $password = Hash::make($pwd);
+            // Actualizamos el PWD
+            \DB::table('users')
+                ->where('id', Auth::user()->id)
+                ->update(['password' => $password]);
+            $response ="Success: Password de usuario ".$email_valid[0]->email." actualizado!";
+        }else{
+            Log::channel('stderr')->info("Password: NO EXISTE EL USUARIO EN LA BD");
+            $response ="Error: Usuario no existe en BD!";
+        }
+        echo json_encode($response);
+    }
+
     //Actualiza Precio a Jugador
     function updatePlayerPrice(Request $request){
         $idPlayer = trim($request->get('idplayer'));
