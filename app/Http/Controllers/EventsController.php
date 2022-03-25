@@ -68,6 +68,7 @@ class EventsController extends Controller
     public function searchevents(Request $request)
     {
         $responses = array();
+        $idTeamsEvent = 0;
         //Detalles del Evento
         $eventinfo = \DB::table('tbl_event')
                         ->select('*')
@@ -81,6 +82,11 @@ class EventsController extends Controller
                             ->where('tbl_teams_event.id_event', $request->get('idEvent'))
                             ->where('tbl_teams.id_user',Auth::user()->id)
                             ->first();
+
+        if(count($id_team_event) > 0)
+        {
+            $idTeamsEvent = $id_team_event->id_teams_event;
+        }
 
         Log::channel('stderr')->info("BUSCA EVENTO: ".json_encode($eventinfo));
         Log::channel('stderr')->info("BUSCA EVENTO: ".json_encode($id_team_event));
@@ -96,13 +102,18 @@ class EventsController extends Controller
         $query_teams_event .='LEFT JOIN tbl_teams_event te ON (auct.id_teams_event = te.id_teams_event) ';
         $query_teams_event .='LEFT JOIN tbl_teams tm ON (te.id_team = tm.id_team)  ';
         $query_teams_event .='WHERE auct.winningbid = 1 AND auct.auct_status_int = 1 AND evt.id_event = '.$request->get('idEvent');
-        $query_teams_event .=' AND auct.id_teams_event = '.$id_team_event->id_teams_event.' AND auct.id_event = '.$request->get('idEvent');
+        $query_teams_event .=' AND auct.id_teams_event = '.$idTeamsEvent.' AND auct.id_event = '.$request->get('idEvent');
         $query_teams_event .=' ORDER BY posPlayer ';
         $your_team = \DB::select($query_teams_event);
 
-        Log::channel('stderr')->info("EVENTS BUSCA TEAM EVENTO: ".json_encode($your_team));   
-        array_push($responses, $your_team);
-
+        if(count($your_team) > 0)
+        {
+            Log::channel('stderr')->info("EVENTS BUSCA TEAM EVENTO: ".json_encode($your_team));   
+            array_push($responses, $your_team);
+        }else {
+            array_push($responses, ["<div class='alert alert-warning'>NO TIENES EQUIPO REGISTRADO EN ESTE EVENTO.</div>"]);
+        }
+        
         //Detalles del equipo en el evento seleccionado
         $query_event ='SELECT auct.id_auction idBid, pl.name_txt Jugador, auct.final_prize_int PrecioFinal,';
         $query_event .='tm.name_txt FantasyTeam, auct.position_txt posPlayer, pe.photo_txt pl_avatar, ';
