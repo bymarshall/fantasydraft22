@@ -88,6 +88,36 @@
         <?php 
             }
         ?>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                REGLAS APROBADAS PARA EL 2022
+                            </div>
+                            <div class="card-body">
+                                <ol>
+                                <li>Inscripcion 10$.</li>
+                                <li>Pote de 200$: 
+                                    <ul>
+                                        <li>1° lugar 120$</li>
+                                        <li>2° lugar 60$</li>
+                                        <li>3° lugar 20$.</li>
+                                    </ul>
+                                <li>El dinero debe pagarse antes del 08-10-2022, puede ser $ o en Bs con el dolar a como este en septiembre. Dia del Draft (Aun por determinar).</li>
+                                <li>Los últimos 5 al finalizar la temporada tendrán un plazo de 1 semana para pagar multa de 2$. El monto recogido por las multas será el premio para el campeón del h2h.</li>
+                                <li>Mánager que no pague la inscripción y/o multa en el plazo establecido será automáticamente descalificado para participar en la próxima temporada.</li>
+                                <li>No se aceptan cambios hasta (Fecha por deternimar) de Abril 2022 10PM hora de Venezuela. El día del draft se debe llevar una lista (se debe encargar una persona de ello) con los lesionados según MLB ( mlb.mlb.com/mlb/fantasy/injuries ) y los NA. Todo jugador que este en esa lista y sea tomado en el draft no podrá ser cambiado o metido en DL / NA hasta la liberación de cambios. Si hay un lesionado o no activo ese día o no aparece en esa lista podrá ser cambiado á menos que sea anunciado públicamente antes del draft y se verifique que está lesionado o No Activo.</li>
+                                <li>Cada Manager tendra 3 Slot para cambios por Covid19  y 2 Slot para cambios por DL</li>
+                                <li>Se permitira el mover a el(los) jugador(es) hacia el DL(Covid) durante el bloqueo y podra agregar un sustituto de la agencia libre tomando en cuenta las observaciones de cambio de DL es decir podra incluir un jugador por el mismo valor o menor del costo ORIGINAL del jugador enfermo PERO con la salvedad que cuando el jugador con COVID se recupere debe ser regresado al roster y expulsar de su equipo el jugador que lo sustituyo. Igualmente se acota que no habra restricciones de cambios por covid durante el bloqueo.</li>
+                                <li>Se permitiran solo 2  cambios de jugadores lesionados DL o 1 NA,  sin importar el monto pagado, siempre y cuando el jugador a seleccionar sea del mismo valor o menor al valor Original, esto aplica durante el periodo del bloqueo.</li>
+                                <li>Si tienen un jugador lesionado en tu cupo de DL una vez el jugador salga del DL debe ser incluido nuevamente al roster o sacado del equipo. El plazo maximo para realizar el movimiento es 12 de la noche del SIGUIENTE DIA que salio del DL igualmente para el jugador NA. EL MANAGER PUEDE AUTORIZAR AL COMISIONADO PARA REALIZARLE EL CAMBIO DURANTE ESE TIEMPO. SI SE PASA DEL TIEMPO LIMITE Y NO HA EJECUTADO NINGUNA DE LAS 2 OPCIONES, EL COMISIONADO ESTARA EN LIBERTAD DE SACARLE EL JUGADOR QUE TIENE SU LUGAR EN EL ROSTER ENTIENDASE JUGADOR QUE REEMPLAZO AL LESIONADO O SI ESTE, YA NO LO TIENE, EL CONSECUTIVO AL MISMO.</li>
+                                <li>Jugador que se agarre de la FA (Agencia Libre) con la etiqueta DL o NA o Covid19 debe ser colocado en el roster activo, NO debe estar en BN.</li>
+                                <li>Para la liberación de cambios se realizará 2 rondas. El orden de los cambios sera según la posición de cada equipo al finalizar la segunda semana de juego. Donde el ultimo lugar tiene el primer cambio, el penúltimo tiene el segundo cambio y así sucesivamente hasta completar la primera vuelta. Para la segunda vuelta el orden será al contrario es decir quien escogió de último ahora será el primero. Todo equipo está en su derecho de no realizar los 2 cambios o ninguno si así lo desea.</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- FIRST ROW -->
                 <div class="row">
                     <div class="col-md-12">
