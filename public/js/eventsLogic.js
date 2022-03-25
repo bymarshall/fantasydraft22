@@ -28,11 +28,12 @@ $(document).ready(function()
                     });
                     //Array del equipo
                     var index = 0;
+                    var noTeamInEvent = false;
                     var row1="<div class='row'>";
                     var row2="<div class='row'>";
 
                     data[1].forEach(item => {
-                        if(item !== undefined){
+                        if((item !== undefined) && (item.posPlayer !== undefined)){
                             if(index < 5)
                             {
                                 row1 +="<div class='col-md-2'><div class='card' align='center'><table><tr><td style='text-align:center;'>";
@@ -45,15 +46,25 @@ $(document).ready(function()
                                 row2 +="<img style='height:75px; weigth:75px;' src='"+item.pl_avatar+"' /><BR /> "+item.Jugador+"<BR /> ";
                                 row2 +=" Posición: "+item.posPlayer+"<BR /> Precio: "+item.PrecioFinal+"</td></tr></table></div></div>";
                             }
-                            //alert(JSON.stringify(x));
-                            //console.log("row="+JSON.stringify(element));
-                            //code +="<tr><td>"+element.posPlayer+"</td><td><img src='"+element.pl_avatar+"' height='75px' weight='75px'/></td><td>"+element.Jugador+"</td><td>"+element.PrecioFinal+"</td><td>"+element.MLB+"</td></tr>";
                             index++;
                         }
+                        if((item !== undefined) && (item.posPlayer === undefined))
+                        {
+                            row1 = JSON.stringify(item);
+                            noTeamInEvent = true;
+                        }
                     });
-                    row1 +="</div>";
-                    row2 +="</div>";
-                    $("#equipoEvents").html(row1+row2);
+
+                    if(!noTeamInEvent)
+                    {
+                        row1 +="</div>";
+                        row2 +="</div>";
+                        $("#equipoEvents").html(row1+row2);
+                    }else
+                    {
+                        $("#equipoEvents").html(row1);
+                    }
+
 
                     //Array de todos los equipos
                     var index = 0;
