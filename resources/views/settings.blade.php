@@ -27,6 +27,12 @@
                         </table>                        
                     </div><!-- /.col -->
                     <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                Fecha de Liberacion de Cambios: <b>Domingo, 1ero de Mayo de 2022</b>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </div>
