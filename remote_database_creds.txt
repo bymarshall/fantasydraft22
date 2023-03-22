@@ -1,0 +1,28 @@
+username = vultradmin
+password = AVNS_VgfSfag05r-XB9tkR81
+host = vultr-prod-f4a1cbab-f677-4539-9277-ef3919cdb641-vultr-prod-83bb.vultrdb.com
+port = 16751
+database = defaultdb
+
+insert into 
+tbl_teams_event(budget,id_teams,id_event,status_int)
+values (200,21,4,1),
+(200,22,4,1),
+(200,23,4,1),
+(200,25,4,1),
+(200,26,4,1),
+(200,27,4,1),
+(200,28,4,1),
+(200,29,4,1),
+(200,30,4,1),
+(200,31,4,1),
+(200,32,4,1),
+(200,33,4,1),
+(200,34,4,1),
+(200,35,4,1),
+(200,36,4,1),
+(200,37,4,1),
+(200,38,4,1),
+(200,39,4,1),
+(200,41,4,1),
+(200,42,4,1);
