@@ -98,7 +98,7 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                REGLAS APROBADAS PARA EL 2022
+                                REGLAS APROBADAS PARA EL 2023
                             </div>
                             <div class="card-body">
                                 <ol>

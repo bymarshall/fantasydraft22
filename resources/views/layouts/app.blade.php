@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>MLB Fantasy Draft 2022</title>
+    <title>MLB Fantasy Draft 2023</title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -75,7 +75,7 @@
         <footer class="main-footer">
             <div class="row">
                 <div class="col-md-6">
-                    <strong>Copyright &copy; 2022 <a href="mailto:carlosamaya1@gmail.com">Carlos Amaya</a>.</strong>
+                    <strong>Copyright &copy; 2023 <a href="mailto:carlosamaya1@gmail.com">Carlos Amaya</a>.</strong>
                 </div>
             </div>
         </footer>

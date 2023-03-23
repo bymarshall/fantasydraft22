@@ -11,7 +11,7 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                Aqui podras ver los resultados de Eventos anterires al MLB Fantasy draft de <b>2022</b>
+                                Aqui podras ver los resultados de Eventos anterires al MLB Fantasy draft de <b>2023</b>
                             </div> 
                         </div>  
                     </div>                 
