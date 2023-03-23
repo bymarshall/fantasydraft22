@@ -1,8 +1,5 @@
-FROM php:7.4-fpm
 
-# Arguments defined in docker-compose.yml
-ARG user
-ARG uid
+FROM webdevops/php-nginx:7.4
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -23,12 +20,14 @@ RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Create system user to run Composer and Artisan Commands
-RUN useradd -G www-data,root -u $uid -d /home/$user $user
-RUN mkdir -p /home/$user/.composer && \
-    chown -R $user:$user /home/$user
-
 # Set working directory
-WORKDIR /var/www
+WORKDIR /app
 
-USER $user
+COPY . .
+
+RUN composer install --no-interaction --optimize-autoloader --no-dev \
+    && php artisan key:generate \
+    && chmod 777 -R /app/storage
+
+ENV WEB_DOCUMENT_ROOT /app/public
+ENV APP_ENV production
