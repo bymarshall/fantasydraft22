@@ -90,7 +90,8 @@ if(confirm('Confirme que desea cargar la subasta'))
 $('#txt_player_search').keyup(function(event){
 $.ajax({
     headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+        'Content-Security-Policy': 'upgrade-insecure-requests'
     },
     url: "{{ route('home.searchplayer') }}",
     method:"GET",
