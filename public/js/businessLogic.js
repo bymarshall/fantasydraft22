@@ -300,7 +300,8 @@ $(document).ready(function(){
         $("#imgPlayer_favs").attr('src', '');
         $.ajax({
             headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Content-Security-Policy': 'upgrade-insecure-requests'
             },
             url: config.routes.search,
             method:"GET",
