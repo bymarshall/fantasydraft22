@@ -5,7 +5,8 @@ $(document).ready(function()
     $("#idEventsSelect").on('change',function() {
        $.ajax({
             headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Content-Security-Policy': 'upgrade-insecure-requests'
             },
             url: config.routes.searchevents,
             method: "GET",

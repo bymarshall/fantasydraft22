@@ -29,7 +29,8 @@ function deleteAuction(idAuction){
         if(confirm("Está seguro que desea eliminar la subasta nro:" + idAuction+"?")) {
             $.ajax({
                 headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    'Content-Security-Policy': 'upgrade-insecure-requests'
                 },
                 url: config.routes.deleteauction,
                 method: "POST",
@@ -58,7 +59,8 @@ function deleteFavs(idFav, namePlayerFav){
         if(confirm("Realmente desea eliminar al jugador "+namePlayerFav+"?")){
             $.ajax({
                 headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    'Content-Security-Policy': 'upgrade-insecure-requests'
                 },
                 url: config.routes.deletefavs,
                 method: "POST",
@@ -212,7 +214,8 @@ $(document).ready(function(){
         $('#cancelarSubasta').removeAttr('disabled');
             $.ajax({
                 headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    'Content-Security-Policy': 'upgrade-insecure-requests'
                 },
                 url: config.routes.initmanualauction,
                 method:"POST",
@@ -249,7 +252,8 @@ $(document).ready(function(){
            $('#iniciaSubasta').removeAttr('disabled'); 
            $.ajax({
                 headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    'Content-Security-Policy': 'upgrade-insecure-requests'
                 },
                 url: config.routes.cancelauction,
                 method:"POST",
@@ -271,7 +275,8 @@ $(document).ready(function(){
         if($("#txt_player_favs").val().trim() != ""){ 
            $.ajax({
                 headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    'Content-Security-Policy': 'upgrade-insecure-requests'
                 },
                 url: config.routes.addfavs,
                 method:"POST",
@@ -444,7 +449,8 @@ $(document).ready(function(){
         {
             $.ajax({
                 headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    'Content-Security-Policy': 'upgrade-insecure-requests'
                 },
                 url: config.routes.loadauction,
                 method:"POST",
@@ -489,7 +495,8 @@ $(document).ready(function(){
             if (confirm("Está Seguro de Cambiar el precio al jugador?")) {
                 $.ajax({
                     headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        'Content-Security-Policy': 'upgrade-insecure-requests'                        
                     },
                     url: config.routes.updateprice,
                     method: "POST",
@@ -518,7 +525,8 @@ $(document).ready(function(){
             if (confirm("Está Seguro de Cambiar el password al usuario?")) {
                 $.ajax({
                     headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        'Content-Security-Policy': 'upgrade-insecure-requests'
                     },
                     url: config.routes.changepassword,
                     method: "POST",
@@ -549,7 +557,8 @@ $(document).ready(function(){
             if (confirm("Está Seguro de Cambiar el password?")) {
                 $.ajax({
                     headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        'Content-Security-Policy': 'upgrade-insecure-requests'
                     },
                     url: config.routes.updatepassword,
                     method: "POST",
@@ -608,7 +617,8 @@ $(document).ready(function(){
             //disparamos el ajax para cancelar la subasta
             $.ajax({
                 headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    'Content-Security-Policy': 'upgrade-insecure-requests'
                 },
                 url: config.routes.cancelauction,
                 method:"POST",

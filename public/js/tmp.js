@@ -52,7 +52,8 @@ if(confirm('Confirme que desea cargar la subasta'))
 {
     $.ajax({
         headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            'Content-Security-Policy': 'upgrade-insecure-requests'
         },
         url: "{{ route('home.loadauction') }}",
         method:"POST",
